@@ -1,0 +1,25 @@
+# Archivos y carpetas a ignorar
+
+# macOS específicos
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
+
+# Editor VS Code
+.vscode/
+
+# Compilaciones C++ y Arduino (si utilizas extensiones)
+build/
+*.bin
+*.elf
+*.hex
+*.uf2
+*.map
+*.o
+*.a
+*.sym
+
+# Por si hay logs o temporales
+*.log
+/tmp/
