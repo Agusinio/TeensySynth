@@ -76,7 +76,13 @@ if (millis() - prevTimer > timer) {
     vcoCvol = (float)analogRead(A7) / 1023;
     Subvol = (float)analogRead(A21) / 1023;
 
-    cut = 15.0 * pow(1000.0, (float)analogRead(A13) / 1023.0);
+    cutpot = analogRead(A13);
+    if (smoothedCutpot < 0) {
+      smoothedCutpot = cutpot;
+    }
+    smoothedCutpot += 0.05 * (cutpot - smoothedCutpot);
+    cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
+
     res = 4.5 * (float)analogRead(A12) / 1023 + 1.1;
     filtAtt = (3000 * (float)mux0 / 1023);
     filtDec = (3000 * (float)mux1 / 1023);
@@ -326,11 +332,26 @@ if (millis() - prevTimer > timer) {
 
     // Filter
     cutpot = analogRead(A13);
+    
+    if (smoothedCutpot < 0) {
+      smoothedCutpot = cutpot;
+      targetCutpot = cutpot;
+    }
+
     if (oldCutpot + tresh < cutpot || oldCutpot - tresh > cutpot) {
-      cut = 15.0 * pow(1000.0, (float)analogRead(A13) / 1023.0); /////cut
+      targetCutpot = cutpot;
       oldCutpot = cutpot + tresh / 2;
-      parameterChanged = true;
       Serial.println("cut turn");
+    }
+
+    if (abs(smoothedCutpot - targetCutpot) > 0.5) {
+      smoothedCutpot += 0.05 * (targetCutpot - smoothedCutpot);
+      cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
+      parameterChanged = true;
+    } else if (smoothedCutpot != targetCutpot) {
+      smoothedCutpot = targetCutpot;
+      cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
+      parameterChanged = true;
     }
 
     respot = analogRead(A12);

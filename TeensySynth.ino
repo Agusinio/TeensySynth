@@ -288,6 +288,8 @@ int oldVolSubpot;
 
 int cutpot;
 int oldCutpot;
+int targetCutpot = -1;
+float smoothedCutpot = -1.0;
 int respot;
 int oldRespot;
 
