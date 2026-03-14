@@ -6,7 +6,8 @@ void loop() {
     activeVoices = 0;
   }
 
-  for (int i=0; i<NUM_VOICES; i++) {
+  if (parameterChanged || preset == 0) {
+    for (int i=0; i<NUM_VOICES; i++) {
     // cross mod
     voices[i].modMix.gain(0, crossMod);
 
@@ -75,4 +76,5 @@ void loop() {
       case 937 ... 966: voices[i].vcoC.arbitraryWaveform(wave27, 2000); break;
       case 970 ... 1024: voices[i].vcoC.arbitraryWaveform(wave28, 2000); break;
     }
-  }
+  } // End of loop over NUM_VOICES
+} // End of if (parameterChanged || preset == 0)

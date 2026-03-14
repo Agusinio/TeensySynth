@@ -4,6 +4,10 @@ if (millis() - prevTimer > timer) {
   preset = analogRead(A24) / 190;
 
   bend = 1 + ((float)analogRead(A0) / 1023 / 4.3) - 0.12;
+  if (abs(bend - oldBend) > 0.005) {
+    parameterChanged = true;
+    oldBend = bend;
+  }
 
   // main octave
   if (digitalRead(6) == 1) {
@@ -158,6 +162,7 @@ if (millis() - prevTimer > timer) {
         octaveB = 2;
       }
       oldOctBsw = octBsw;
+      parameterChanged = true;
       Serial.println("octave B switch");
     }
 
@@ -178,6 +183,7 @@ if (millis() - prevTimer > timer) {
         octaveC = 2;
       }
       oldOctCsw = octCsw;
+      parameterChanged = true;
       Serial.println("octave C switch");
     }
 
@@ -202,6 +208,7 @@ if (millis() - prevTimer > timer) {
         shapeA = 2;
       }
       oldShapeAsw = shapeAsw;
+      parameterChanged = true;
       Serial.println("shape A switch");
     }
 
@@ -222,6 +229,7 @@ if (millis() - prevTimer > timer) {
         shapeB = 2;
       }
       oldShapeBsw = shapeBsw;
+      parameterChanged = true;
       Serial.println("shape B switch");
     }
 
@@ -231,6 +239,7 @@ if (millis() - prevTimer > timer) {
         oldShapeCpot - tresh2 > shapeCpot) {
       shapeC = analogRead(A4);
       oldShapeCpot = shapeCpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("shape C turn");
     }
 
@@ -247,6 +256,7 @@ if (millis() - prevTimer > timer) {
         tuneB = ((float)analogRead(A2) / 510);
       }
       oldTuneBpot = tuneBpot + tresh / 2;
+      parameterChanged = true;
       Serial.println("tuneB turn");
     }
 
@@ -259,6 +269,7 @@ if (millis() - prevTimer > timer) {
         tuneC = ((float)analogRead(A3) / 510);
       }
       oldTuneCpot = tuneCpot + tresh / 2;
+      parameterChanged = true;
       Serial.println("tuneC turn");
     }
 
@@ -268,6 +279,7 @@ if (millis() - prevTimer > timer) {
         oldCrossModpot - tresh > crossModpot) {
       crossMod = (float)analogRead(A1) / 512;
       oldCrossModpot = crossModpot + tresh / 2;
+      parameterChanged = true;
       Serial.println("crossmod turn");
     }
 
@@ -279,6 +291,7 @@ if (millis() - prevTimer > timer) {
     if (oldVolApot + tresh2 < volApot || oldVolApot - tresh2 > volApot) {
       vcoAvol = (float)analogRead(A5) / 1023;
       oldVolApot = volApot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("volA turn");
     }
 
@@ -286,6 +299,7 @@ if (millis() - prevTimer > timer) {
     if (oldVolBpot + tresh2 < volBpot || oldVolBpot - tresh2 > volBpot) {
       vcoBvol = (float)analogRead(A6) / 1023;
       oldVolBpot = volBpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("volB turn");
     }
 
@@ -293,6 +307,7 @@ if (millis() - prevTimer > timer) {
     if (oldVolCpot + tresh2 < volCpot || oldVolCpot - tresh2 > volCpot) {
       vcoCvol = (float)analogRead(A7) / 1023;
       oldVolCpot = volCpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("volC turn");
     }
 
@@ -301,6 +316,7 @@ if (millis() - prevTimer > timer) {
         oldVolSubpot - tresh2 > volSubpot) {
       Subvol = (float)analogRead(A21) / 1023;
       oldVolSubpot = volSubpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("vol sub turn");
     }
 
@@ -313,6 +329,7 @@ if (millis() - prevTimer > timer) {
     if (oldCutpot + tresh < cutpot || oldCutpot - tresh > cutpot) {
       cut = 15000 * (float)analogRead(A13) / 1023 + 15; /////cut
       oldCutpot = cutpot + tresh / 2;
+      parameterChanged = true;
       Serial.println("cut turn");
     }
 
@@ -320,6 +337,7 @@ if (millis() - prevTimer > timer) {
     if (oldRespot + tresh2 < respot || oldRespot - tresh2 > respot) {
       res = 4.5 * (float)analogRead(A12) / 1023 + 1.1;
       oldRespot = respot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("res turn");
     }
 
@@ -329,6 +347,7 @@ if (millis() - prevTimer > timer) {
     if (oldFAttpot + tresh2 < fAttpot || oldFAttpot - tresh2 > fAttpot) {
       filtAtt = (3000 * (float)mux0 / 1023);
       oldFAttpot = fAttpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("filter attack turn");
     }
 
@@ -336,6 +355,7 @@ if (millis() - prevTimer > timer) {
     if (oldFDecpot + tresh2 < fDecpot || oldFDecpot - tresh2 > fDecpot) {
       filtDec = (3000 * (float)mux1 / 1023);
       oldFDecpot = fDecpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("filter decay turn");
     }
 
@@ -343,6 +363,7 @@ if (millis() - prevTimer > timer) {
     if (oldFAmtpot + tresh2 < fAmtpot || oldFAmtpot - tresh2 > fAmtpot) {
       filtAmt = (float)mux2 / 512 - 1;
       oldFAmtpot = fAmtpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("filter Amt turn");
     }
 
@@ -359,6 +380,7 @@ if (millis() - prevTimer > timer) {
         filterMode = 0;
       }
       oldFiltModesw = filtModesw;
+      parameterChanged = true;
       Serial.println("filter mode switch");
     }
 
@@ -370,6 +392,7 @@ if (millis() - prevTimer > timer) {
     if (oldAttpot + tresh2 < attpot || oldAttpot - tresh2 > attpot) {
       envAtt = 3000 * (float)analogRead(A25) / 1023;
       oldAttpot = attpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Attack turn");
     }
 
@@ -378,6 +401,7 @@ if (millis() - prevTimer > timer) {
       envDec = 5000 * (float)analogRead(A26) / 1023;
       envRel = 5000 * (float)analogRead(A26) / 1023;
       oldDecpot = decpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Decay turn");
     }
 
@@ -385,6 +409,7 @@ if (millis() - prevTimer > timer) {
     if (oldSuspot + tresh2 < suspot || oldSuspot - tresh2 > suspot) {
       envSus = (float)analogRead(A10) / 100;
       oldSuspot = suspot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Sustain turn");
     }
 
@@ -401,6 +426,7 @@ if (millis() - prevTimer > timer) {
         lfoAamp = (float)mux3 / 1024 / 3;
       }
       oldLfoAmppot = lfoAmppot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Lfo A amp turn");
     }
 
@@ -409,6 +435,7 @@ if (millis() - prevTimer > timer) {
         oldLfoFreqpot - tresh2 > lfoFreqpot) {
       lfoAfreq = 20 * (float)mux4 / 1024 + 0.1;
       oldLfoFreqpot = lfoFreqpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Lfo A Freq turn");
     }
 
@@ -418,6 +445,7 @@ if (millis() - prevTimer > timer) {
       lfoAdel = 2000 * (float)mux5 / 1024;
       lfoAatt = 3000 * (float)mux5 / 1024;
       oldLfoAttpot = lfoAttpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Lfo A Att turn");
     }
 
@@ -427,6 +455,7 @@ if (millis() - prevTimer > timer) {
       lfoAdec = 4000 * (float)mux6 / 1024;
       lfoArel = 4000 * (float)mux6 / 1024;
       oldLfoDecpot = lfoDecpot + (tresh2 / 2);
+      parameterChanged = true;
       Serial.println("Lfo A Dec turn");
     }
 
@@ -435,6 +464,7 @@ if (millis() - prevTimer > timer) {
         oldLfoSuspot - tresh2 * 2 > lfoSuspot) {
       lfoAsus = (float)mux7 / 1024;
       oldLfoSuspot = lfoSuspot + ((tresh2 * 2) / 2);
+      parameterChanged = true;
       Serial.println("Lfo A Sus turn");
     }
 
@@ -455,6 +485,7 @@ if (millis() - prevTimer > timer) {
         lfoAdest = 2;
       }
       oldLfoDestsw = lfoDestsw;
+      parameterChanged = true;
       Serial.println("Lfo dest switch");
     }
 
@@ -476,6 +507,7 @@ if (millis() - prevTimer > timer) {
         lfoAshape = 2;
       }
       oldLfoShapesw = lfoShapesw;
+      parameterChanged = true;
       Serial.println("Lfo shape switch");
     }
 
@@ -488,6 +520,7 @@ if (millis() - prevTimer > timer) {
         oldLfoBAmppot - tresh2 > lfoBAmppot) {
       lfoBamp = (float)analogRead(A14) / 1023;
       oldLfoBAmppot = lfoBAmppot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Lfo B amp turn");
     }
 
@@ -496,6 +529,7 @@ if (millis() - prevTimer > timer) {
         oldLfoBFreqpot - tresh2 > lfoBFreqpot) {
       lfoBfreq = 5 * (float)analogRead(A22) / 1023 + 0.1;
       oldLfoBFreqpot = lfoBFreqpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Lfo B freq turn");
     }
 
@@ -512,6 +546,7 @@ if (millis() - prevTimer > timer) {
         dlyAmt = 0;
       }
       oldDlyAmtpot = dlyAmtpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Dly amt turn");
     }
 
@@ -521,6 +556,7 @@ if (millis() - prevTimer > timer) {
       dlyTimeL = analogRead(A17) / 2.5;
       dlyTimeR = analogRead(A17) / 1.25;
       oldDlyTimepot = dlyTimepot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Dly time turn");
     }
 
@@ -530,6 +566,7 @@ if (millis() - prevTimer > timer) {
         oldRevMixpot - tresh2 > revMixpot) {
       revMix = ((float)analogRead(A19) / 1024 / 1.2);
       oldRevMixpot = revMixpot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Rev mix turn");
     }
 
@@ -538,6 +575,7 @@ if (millis() - prevTimer > timer) {
         oldRevSizepot - tresh2 > revSizepot) {
       revSize = ((float)analogRead(A18) / 1024 - 0.01);
       oldRevSizepot = revSizepot + tresh2 / 2;
+      parameterChanged = true;
       Serial.println("Rev size turn");
     }
   }

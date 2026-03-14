@@ -1,5 +1,5 @@
-
-  for (int i=0; i<NUM_VOICES; i++) {
+  if (parameterChanged || preset == 0) {
+    for (int i=0; i<NUM_VOICES; i++) {
     // filter
     voices[i].filter.frequency(cut);
     voices[i].filter.resonance(res);
@@ -58,6 +58,11 @@
       voices[i].patch_lfoAenv_filterMix->disconnect();
     }
   }
+  
+  if (parameterChanged) {
+      parameterChanged = false; // Reset the flag after updating all voices
+  }
+} // End of if (parameterChanged || preset == 0)
 
   // lfo A read (global amp mod)
   unsigned long currTime = millis();

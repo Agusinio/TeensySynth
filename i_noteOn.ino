@@ -44,6 +44,8 @@ void myNoteOn(byte channel, byte note, byte velocity) {
     voices[foundVoice].filterEnv.noteOn();
     voices[foundVoice].lfoAenv.noteOn();
     
+    parameterChanged = true;
+    
     // Global tracking for other functions that might still use `voices` int count
     if (activeVoices < NUM_VOICES) {
       activeVoices++;
@@ -57,6 +59,7 @@ void myNoteOn(byte channel, byte note, byte velocity) {
     voices[0].filterEnv.noteOn();
     voices[0].lfoAenv.noteOn();
     activeVoices = 1;
+    parameterChanged = true;
   }
 }
 
