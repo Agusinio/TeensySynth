@@ -5,269 +5,112 @@
 #include <SerialFlash.h>
 #include <Wire.h>
 
-// GUItool: begin automatically generated code
-AudioSynthWaveform_F32 lfoA1;          // xy=153.9333610534668,214.64774894714355
-AudioSynthWaveform_F32 lfoA2;          // xy=159.33330154418945,472.5476875305176
-AudioSynthWaveform_F32 lfoA3;          // xy=161.90474319458008,732.6191596984863
-AudioSynthWaveform_F32 lfoA4;          // xy=161.90474319458008,992.7619819641113
-AudioSynthWaveform_F32 lfoA5;          // xy=167.30468368530273,1242.6619205474854
-AudioSynthWaveform_F32 lfoA6;          // xy=169.87612533569336,1512.733392715454
-AudioEffectEnvelope_F32 lfoAenv1;      // xy=232.33330917358398,129.3143424987793
-AudioSynthWaveform_F32 lfoB1;          // xy=278.9333305358887,173.93335914611816
-AudioEffectEnvelope_F32 lfoAenv2;      // xy=279.3332748413086,472.5476369857788
-AudioEffectEnvelope_F32 lfoAenv3;      // xy=281.9047164916992,732.6191091537476
-AudioEffectEnvelope_F32 lfoAenv4;      // xy=281.9047164916992,992.7619314193726
-AudioSynthWaveform_F32 lfoB2;          // xy=284.3332710266113,431.8332977294922
-AudioSynthWaveform_F32 lfoB3;          // xy=286.90471267700195,691.9047698974609
-AudioSynthWaveform_F32 lfoB4;          // xy=286.90471267700195,952.0475921630859
-AudioEffectEnvelope_F32 lfoAenv5;      // xy=287.3046569824219,1242.6618700027466
-AudioEffectEnvelope_F32 lfoAenv6;      // xy=289.8760986328125,1512.7333421707153
-AudioSynthWaveform_F32 lfoB5;          // xy=292.3046531677246,1201.94753074646
-AudioSynthWaveform_F32 lfoB6;          // xy=294.87609481811523,1472.0190029144287
-AudioMixer4_F32 modMix1;               // xy=315.8000030517578,97.93336296081543
-AudioAnalyzeRMS_F32 lfoAread1;         // xy=320.53334045410156,248.9333620071411
-AudioMixer4_F32 modMix2;               // xy=321.19994354248047,355.83330154418945
-AudioMixer4_F32 modMix3;               // xy=323.7713851928711,615.9047737121582
-AudioMixer4_F32 modMix4;               // xy=323.7713851928711,876.0475959777832
-AudioMixer4_F32 modMix5;               // xy=329.17132568359375,1125.9475345611572
-AudioMixer4_F32 modMix6;               // xy=331.7427673339844,1396.019006729126
-AudioSynthWaveformModulated_F32 sub1;  // xy=470.93334197998047,208.93334197998047
-AudioSynthWaveformModulated_F32 vcoA1; // xy=471.93334197998047,115.9333381652832
-AudioSynthWaveformModulated_F32 vcoB1; // xy=471.93334197998047,146.93334770202637
-AudioSynthWaveformModulated_F32 vcoC1; // xy=471.9333724975586,177.93337440490723
-AudioSynthWaveformModulated_F32 sub2;  // xy=476.3332824707031,466.8332805633545
-AudioSynthWaveformModulated_F32 vcoA2; // xy=477.3332824707031,373.8332767486572
-AudioSynthWaveformModulated_F32 vcoB2; // xy=477.3332824707031,404.8332862854004
-AudioSynthWaveformModulated_F32 vcoC2; // xy=477.33331298828125,435.83331298828125
-AudioSynthWaveformModulated_F32 sub3;  // xy=478.90472412109375,726.9047527313232
-AudioSynthWaveformModulated_F32 vcoA3; // xy=479.90472412109375,633.904748916626
-AudioSynthWaveformModulated_F32 vcoB3; // xy=479.90472412109375,664.9047584533691
-AudioSynthWaveformModulated_F32 vcoC3; // xy=479.9047546386719,695.90478515625
-AudioSynthWaveformModulated_F32 sub4;  // xy=478.90472412109375,987.0475749969482
-AudioSynthWaveformModulated_F32 vcoA4; // xy=479.90472412109375,894.047571182251
-AudioSynthWaveformModulated_F32 vcoB4; // xy=479.90472412109375,925.0475807189941
-AudioSynthWaveformModulated_F32 vcoC4; // xy=479.9047546386719,956.047607421875
-AudioSynthWaveformModulated_F32 sub5;  // xy=484.3046646118164,1236.9475135803223
-AudioSynthWaveformModulated_F32 vcoA5; // xy=485.3046646118164,1143.947509765625
-AudioSynthWaveformModulated_F32 vcoB5; // xy=485.3046646118164,1174.9475193023682
-AudioSynthWaveformModulated_F32 vcoC5; // xy=485.30469512939453,1205.947546005249
-AudioSynthWaveformModulated_F32 sub6;  // xy=486.87610626220703,1507.018985748291
-AudioSynthWaveformModulated_F32 vcoA6; // xy=487.87610626220703,1414.0189819335938
-AudioSynthWaveformModulated_F32 vcoB6; // xy=487.87610626220703,1445.018991470337
-AudioSynthWaveformModulated_F32 vcoC6; // xy=487.87613677978516,1476.0190181732178
-AudioMixer4_F32 voiceMix1;             // xy=632.9334449768066,160.93334197998047
-AudioMixer4_F32 voiceMix2;             // xy=638.3333854675293,418.8332805633545
-AudioMixer4_F32 voiceMix3;             // xy=640.9048271179199,678.9047527313232
-AudioMixer4_F32 voiceMix4;             // xy=640.9048271179199,939.0475749969482
-AudioMixer4_F32 voiceMix5;             // xy=646.3047676086426,1188.9475135803223
-AudioMixer4_F32 voiceMix6;             // xy=648.8762092590332,1459.018985748291
-AudioSynthWaveformDc_F32 dc1;          // xy=654.8001174926758,208.9333610534668
-AudioSynthWaveformDc_F32 dc2;          // xy=660.2000579833984,466.8332996368408
-AudioSynthWaveformDc_F32 dc3;          // xy=662.7714996337891,726.9047718048096
-AudioSynthWaveformDc_F32 dc4;          // xy=662.7714996337891,987.0475940704346
-AudioSynthWaveformDc_F32 dc5;          // xy=668.1714401245117,1236.9475326538086
-AudioSynthWaveformDc_F32 dc6;          // xy=670.7428817749023,1507.0190048217773
-AudioEffectEnvelope_F32 filterEnv1;    // xy=773.8003215789795,197.93339347839355
-AudioEffectEnvelope_F32 filterEnv2;    // xy=779.2002620697021,455.8333320617676
-AudioEffectEnvelope_F32 filterEnv3;    // xy=781.7717037200928,715.9048042297363
-AudioEffectEnvelope_F32 filterEnv4;    // xy=781.7717037200928,976.0476264953613
-AudioEffectEnvelope_F32 filterEnv5;    // xy=787.1716442108154,1225.9475650787354
-AudioEffectEnvelope_F32 filterEnv6;    // xy=789.743085861206,1496.019037246704
-AudioMixer4_F32 filterMix1;            // xy=945.8001937866211,199.93337631225586
-AudioMixer4_F32 filterMix2;            // xy=951.2001342773438,457.8333148956299
-AudioMixer4_F32 filterMix3;            // xy=953.7715759277344,717.9047870635986
-AudioMixer4_F32 filterMix4;            // xy=953.7715759277344,978.0476093292236
-AudioMixer4_F32 filterMix5;            // xy=959.171516418457,1227.9475479125977
-AudioMixer4_F32 filterMix6;            // xy=961.7429580688477,1498.0190200805664
-AudioFilterStateVariable_F32 filter1;  // xy=1066.8003997802734,166.9333267211914
-AudioFilterStateVariable_F32 filter2;  // xy=1072.200340270996,424.83326530456543
-AudioFilterStateVariable_F32 filter3;  // xy=1074.7717819213867,684.9047374725342
-AudioFilterStateVariable_F32 filter4;  // xy=1074.7717819213867,945.0475597381592
-AudioFilterStateVariable_F32 filter5;  // xy=1080.1717224121094,1194.9474983215332
-AudioFilterStateVariable_F32 filter6;  // xy=1082.7431640625,1465.018970489502
-AudioMixer4_F32 filterMode1;           // xy=1198.66695022583,181.9333553314209
-AudioMixer4_F32 filterMode2;           // xy=1204.0668907165527,439.8332939147949
-AudioMixer4_F32 filterMode3;           // xy=1206.6383323669434,699.9047660827637
-AudioMixer4_F32 filterMode4;           // xy=1206.6383323669434,960.0475883483887
-AudioMixer4_F32 filterMode5;           // xy=1212.038272857666,1209.9475269317627
-AudioMixer4_F32 filterMode6;           // xy=1214.6097145080566,1480.0189990997314
-AudioEffectEnvelope_F32 env1;          // xy=1328.6005554199219,181.93345737457275
-AudioEffectEnvelope_F32 env2;          // xy=1334.0004959106445,439.8333959579468
-AudioEffectEnvelope_F32 env3;          // xy=1336.5719375610352,699.9048681259155
-AudioEffectEnvelope_F32 env4;          // xy=1336.5719375610352,960.0476903915405
-AudioEffectEnvelope_F32 env5;          // xy=1341.9718780517578,1209.9476289749146
-AudioEffectEnvelope_F32 env6;          // xy=1344.5433197021484,1480.0191011428833
-AudioMixer4_F32 mix1;                  // xy=1670.9339637756348,785.7668323516846
-AudioMixer4_F32 mix2;                  // xy=1670.9338912963867,917.7668380737305
-AudioMixer4_F32 finalMix;              // xy=1795.9338989257812,854.7668190002441
-AudioFilterStateVariable_F32 dlyFiltR; // xy=2003.8004722595215,1181.3002490997314
-AudioFilterStateVariable_F32 dlyFiltL; // xy=2015.1337928771973,942.633547782898
-AudioEffectDelay_F32 dlyL;             // xy=2128.244888305664,1040.9224643707275
-AudioEffectDelay_F32 dlyR;             // xy=2127.77779006958,1274.4259929656982
-AudioMixer4_F32 dlyMixR;               // xy=2128.934093475342,1174.700201034546
-AudioMixer4_F32 dlyMixL;               // xy=2139.48970413208,936.1446781158447
-AudioEffectFreeverb_F32 reverb;        // xy=2204.4674758911133,620.5891056060791
-AudioMixer4_F32 fxL;                   // xy=2379.023365020752,785.255838394165
-AudioMixer4_F32 fxR;                   // xy=2379.023235321045,907.2558078765869
-AudioOutputI2S i2s1;               // xy=2549.5332946777344,853.2666549682617
-AudioConnection_F32 patchCord1(lfoA1, lfoAenv1);
-AudioConnection_F32 patchCord2(lfoA2, lfoAenv2);
-AudioConnection_F32 patchCord3(lfoA3, lfoAenv3);
-AudioConnection_F32 patchCord4(lfoA4, lfoAenv4);
-AudioConnection_F32 patchCord5(lfoA5, lfoAenv5);
-AudioConnection_F32 patchCord6(lfoA6, lfoAenv6);
-AudioConnection_F32 patchCord7(lfoAenv1, 0, modMix1, 1);
-AudioConnection_F32 patchCord8(lfoAenv1, 0, vcoB1, 0);
-AudioConnection_F32 patchCord9(lfoAenv1, 0, vcoC1, 0);
-AudioConnection_F32 patchCord10(lfoAenv1, 0, sub1, 0);
-AudioConnection_F32 patchCord11(lfoAenv1, 0, filterMix1, 1);
-AudioConnection_F32 patchCord12(lfoAenv1, lfoAread1);
-AudioConnection_F32 patchCord13(lfoB1, 0, vcoA1, 1);
-AudioConnection_F32 patchCord14(lfoB1, 0, vcoB1, 1);
-AudioConnection_F32 patchCord15(lfoAenv2, 0, modMix2, 1);
-AudioConnection_F32 patchCord16(lfoAenv2, 0, vcoB2, 0);
-AudioConnection_F32 patchCord17(lfoAenv2, 0, vcoC2, 0);
-AudioConnection_F32 patchCord18(lfoAenv2, 0, sub2, 0);
-AudioConnection_F32 patchCord19(lfoAenv2, 0, filterMix2, 1);
-AudioConnection_F32 patchCord20(lfoAenv3, 0, modMix3, 1);
-AudioConnection_F32 patchCord21(lfoAenv3, 0, vcoB3, 0);
-AudioConnection_F32 patchCord22(lfoAenv3, 0, vcoC3, 0);
-AudioConnection_F32 patchCord23(lfoAenv3, 0, sub3, 0);
-AudioConnection_F32 patchCord24(lfoAenv3, 0, filterMix3, 1);
-AudioConnection_F32 patchCord25(lfoAenv4, 0, modMix4, 1);
-AudioConnection_F32 patchCord26(lfoAenv4, 0, vcoB4, 0);
-AudioConnection_F32 patchCord27(lfoAenv4, 0, vcoC4, 0);
-AudioConnection_F32 patchCord28(lfoAenv4, 0, sub4, 0);
-AudioConnection_F32 patchCord29(lfoAenv4, 0, filterMix4, 1);
-AudioConnection_F32 patchCord30(lfoB2, 0, vcoA2, 1);
-AudioConnection_F32 patchCord31(lfoB2, 0, vcoB2, 1);
-AudioConnection_F32 patchCord32(lfoB3, 0, vcoA3, 1);
-AudioConnection_F32 patchCord33(lfoB3, 0, vcoB3, 1);
-AudioConnection_F32 patchCord34(lfoB4, 0, vcoA4, 1);
-AudioConnection_F32 patchCord35(lfoB4, 0, vcoB4, 1);
-AudioConnection_F32 patchCord36(lfoAenv5, 0, modMix5, 1);
-AudioConnection_F32 patchCord37(lfoAenv5, 0, vcoB5, 0);
-AudioConnection_F32 patchCord38(lfoAenv5, 0, vcoC5, 0);
-AudioConnection_F32 patchCord39(lfoAenv5, 0, sub5, 0);
-AudioConnection_F32 patchCord40(lfoAenv5, 0, filterMix5, 1);
-AudioConnection_F32 patchCord41(lfoAenv6, 0, modMix6, 1);
-AudioConnection_F32 patchCord42(lfoAenv6, 0, vcoB6, 0);
-AudioConnection_F32 patchCord43(lfoAenv6, 0, vcoC6, 0);
-AudioConnection_F32 patchCord44(lfoAenv6, 0, sub6, 0);
-AudioConnection_F32 patchCord45(lfoAenv6, 0, filterMix6, 1);
-AudioConnection_F32 patchCord46(lfoB5, 0, vcoA5, 1);
-AudioConnection_F32 patchCord47(lfoB5, 0, vcoB5, 1);
-AudioConnection_F32 patchCord48(lfoB6, 0, vcoA6, 1);
-AudioConnection_F32 patchCord49(lfoB6, 0, vcoB6, 1);
-AudioConnection_F32 patchCord50(modMix1, 0, vcoA1, 0);
-AudioConnection_F32 patchCord51(modMix2, 0, vcoA2, 0);
-AudioConnection_F32 patchCord52(modMix3, 0, vcoA3, 0);
-AudioConnection_F32 patchCord53(modMix4, 0, vcoA4, 0);
-AudioConnection_F32 patchCord54(modMix5, 0, vcoA5, 0);
-AudioConnection_F32 patchCord55(modMix6, 0, vcoA6, 0);
-AudioConnection_F32 patchCord56(sub1, 0, voiceMix1, 3);
-AudioConnection_F32 patchCord57(vcoA1, 0, voiceMix1, 0);
-AudioConnection_F32 patchCord58(vcoB1, 0, voiceMix1, 1);
-AudioConnection_F32 patchCord59(vcoB1, 0, modMix1, 0);
-AudioConnection_F32 patchCord60(vcoC1, 0, voiceMix1, 2);
-AudioConnection_F32 patchCord61(sub2, 0, voiceMix2, 3);
-AudioConnection_F32 patchCord62(vcoA2, 0, voiceMix2, 0);
-AudioConnection_F32 patchCord63(vcoB2, 0, voiceMix2, 1);
-AudioConnection_F32 patchCord64(vcoB2, 0, modMix2, 0);
-AudioConnection_F32 patchCord65(vcoC2, 0, voiceMix2, 2);
-AudioConnection_F32 patchCord66(sub3, 0, voiceMix3, 3);
-AudioConnection_F32 patchCord67(vcoA3, 0, voiceMix3, 0);
-AudioConnection_F32 patchCord68(vcoB3, 0, voiceMix3, 1);
-AudioConnection_F32 patchCord69(vcoB3, 0, modMix3, 0);
-AudioConnection_F32 patchCord70(vcoC3, 0, voiceMix3, 2);
-AudioConnection_F32 patchCord71(sub4, 0, voiceMix4, 3);
-AudioConnection_F32 patchCord72(vcoA4, 0, voiceMix4, 0);
-AudioConnection_F32 patchCord73(vcoB4, 0, voiceMix4, 1);
-AudioConnection_F32 patchCord74(vcoB4, 0, modMix4, 0);
-AudioConnection_F32 patchCord75(vcoC4, 0, voiceMix4, 2);
-AudioConnection_F32 patchCord76(sub5, 0, voiceMix5, 3);
-AudioConnection_F32 patchCord77(vcoA5, 0, voiceMix5, 0);
-AudioConnection_F32 patchCord78(vcoB5, 0, voiceMix5, 1);
-AudioConnection_F32 patchCord79(vcoB5, 0, modMix5, 0);
-AudioConnection_F32 patchCord80(vcoC5, 0, voiceMix5, 2);
-AudioConnection_F32 patchCord81(sub6, 0, voiceMix6, 3);
-AudioConnection_F32 patchCord82(vcoA6, 0, voiceMix6, 0);
-AudioConnection_F32 patchCord83(vcoB6, 0, voiceMix6, 1);
-AudioConnection_F32 patchCord84(vcoB6, 0, modMix6, 0);
-AudioConnection_F32 patchCord85(vcoC6, 0, voiceMix6, 2);
-AudioConnection_F32 patchCord86(voiceMix1, 0, filter1, 0);
-AudioConnection_F32 patchCord87(voiceMix2, 0, filter2, 0);
-AudioConnection_F32 patchCord88(voiceMix3, 0, filter3, 0);
-AudioConnection_F32 patchCord89(voiceMix4, 0, filter4, 0);
-AudioConnection_F32 patchCord90(voiceMix5, 0, filter5, 0);
-AudioConnection_F32 patchCord91(voiceMix6, 0, filter6, 0);
-AudioConnection_F32 patchCord92(dc1, filterEnv1);
-AudioConnection_F32 patchCord93(dc2, filterEnv2);
-AudioConnection_F32 patchCord94(dc3, filterEnv3);
-AudioConnection_F32 patchCord95(dc4, filterEnv4);
-AudioConnection_F32 patchCord96(dc5, filterEnv5);
-AudioConnection_F32 patchCord97(dc6, filterEnv6);
-AudioConnection_F32 patchCord98(filterEnv1, 0, filterMix1, 0);
-AudioConnection_F32 patchCord99(filterEnv2, 0, filterMix2, 0);
-AudioConnection_F32 patchCord100(filterEnv3, 0, filterMix3, 0);
-AudioConnection_F32 patchCord101(filterEnv4, 0, filterMix4, 0);
-AudioConnection_F32 patchCord102(filterEnv5, 0, filterMix5, 0);
-AudioConnection_F32 patchCord103(filterEnv6, 0, filterMix6, 0);
-AudioConnection_F32 patchCord104(filterMix1, 0, filter1, 1);
-AudioConnection_F32 patchCord105(filterMix2, 0, filter2, 1);
-AudioConnection_F32 patchCord106(filterMix3, 0, filter3, 1);
-AudioConnection_F32 patchCord107(filterMix4, 0, filter4, 1);
-AudioConnection_F32 patchCord108(filterMix5, 0, filter5, 1);
-AudioConnection_F32 patchCord109(filterMix6, 0, filter6, 1);
-AudioConnection_F32 patchCord110(filter1, 0, filterMode1, 0);
-AudioConnection_F32 patchCord111(filter1, 1, filterMode1, 1);
-AudioConnection_F32 patchCord112(filter2, 0, filterMode2, 0);
-AudioConnection_F32 patchCord113(filter2, 1, filterMode2, 1);
-AudioConnection_F32 patchCord114(filter3, 0, filterMode3, 0);
-AudioConnection_F32 patchCord115(filter3, 1, filterMode3, 1);
-AudioConnection_F32 patchCord116(filter4, 0, filterMode4, 0);
-AudioConnection_F32 patchCord117(filter4, 1, filterMode4, 1);
-AudioConnection_F32 patchCord118(filter5, 0, filterMode5, 0);
-AudioConnection_F32 patchCord119(filter5, 1, filterMode5, 1);
-AudioConnection_F32 patchCord120(filter6, 0, filterMode6, 0);
-AudioConnection_F32 patchCord121(filter6, 1, filterMode6, 1);
-AudioConnection_F32 patchCord122(filterMode1, env1);
-AudioConnection_F32 patchCord123(filterMode2, env2);
-AudioConnection_F32 patchCord124(filterMode3, env3);
-AudioConnection_F32 patchCord125(filterMode4, env4);
-AudioConnection_F32 patchCord126(filterMode5, env5);
-AudioConnection_F32 patchCord127(filterMode6, env6);
-AudioConnection_F32 patchCord128(env1, 0, mix1, 0);
-AudioConnection_F32 patchCord129(env2, 0, mix1, 1);
-AudioConnection_F32 patchCord130(env3, 0, mix1, 2);
-AudioConnection_F32 patchCord131(env4, 0, mix2, 0);
-AudioConnection_F32 patchCord132(env5, 0, mix2, 1);
-AudioConnection_F32 patchCord133(env6, 0, mix2, 2);
-AudioConnection_F32 patchCord134(mix1, 0, finalMix, 0);
-AudioConnection_F32 patchCord135(mix2, 0, finalMix, 1);
-AudioConnection_F32 patchCord136(finalMix, 0, fxL, 0);
-AudioConnection_F32 patchCord137(finalMix, reverb);
-AudioConnection_F32 patchCord138(finalMix, 0, fxR, 0);
-AudioConnection_F32 patchCord139(finalMix, 0, dlyMixL, 0);
-AudioConnection_F32 patchCord140(finalMix, 0, dlyMixR, 0);
-AudioConnection_F32 patchCord141(dlyFiltR, 0, dlyMixR, 1);
-AudioConnection_F32 patchCord142(dlyFiltL, 0, dlyMixL, 1);
-AudioConnection_F32 patchCord143(dlyL, 0, dlyFiltL, 0);
-AudioConnection_F32 patchCord144(dlyR, 0, dlyFiltR, 0);
-AudioConnection_F32 patchCord145(dlyMixR, 0, fxR, 2);
-AudioConnection_F32 patchCord146(dlyMixR, dlyR);
-AudioConnection_F32 patchCord147(dlyMixL, 0, fxL, 2);
-AudioConnection_F32 patchCord148(dlyMixL, dlyL);
-AudioConnection_F32 patchCord149(reverb, 0, fxL, 1);
-AudioConnection_F32 patchCord150(reverb, 0, fxR, 1);
-AudioConvert_F32toI16 convL;
-AudioConvert_F32toI16 convR;
-AudioConnection_F32 patchCord151(fxL, 0, convL, 0);
-AudioConnection_F32 patchCord152(fxR, 0, convR, 0);
-AudioConnection patchCordToI2S_L(convL, 0, i2s1, 0);
-AudioConnection patchCordToI2S_R(convR, 0, i2s1, 1);
-AudioControlSGTL5000 sgtl5000_1;
-// GUItool: end automatically generated code
+// --- AUTO-GENERATED ARRAY BASED ARCHITECTURE ---
+const int NUM_VOICES = 10;
+
+// VOICE COMPONENTS
+AudioSynthWaveform_F32            lfoA[NUM_VOICES];
+AudioSynthWaveform_F32            lfoB[NUM_VOICES];
+AudioEffectEnvelope_F32           lfoAenv[NUM_VOICES];
+
+AudioSynthWaveformModulated_F32   vcoA[NUM_VOICES];
+AudioSynthWaveformModulated_F32   vcoB[NUM_VOICES];
+AudioSynthWaveformModulated_F32   vcoC[NUM_VOICES];
+AudioSynthWaveformModulated_F32   sub[NUM_VOICES];
+
+AudioMixer4_F32                   modMix[NUM_VOICES];
+AudioMixer4_F32                   voiceMix[NUM_VOICES];
+
+AudioSynthWaveformDc_F32          dc[NUM_VOICES];
+AudioEffectEnvelope_F32           filterEnv[NUM_VOICES];
+AudioMixer4_F32                   filterMix[NUM_VOICES];
+AudioFilterStateVariable_F32      filter[NUM_VOICES];
+AudioMixer4_F32                   filterMode[NUM_VOICES];
+AudioEffectEnvelope_F32           env[NUM_VOICES];
+
+// GLOBAL COMPONENTS
+AudioAnalyzeRMS_F32               lfoAread1;
+AudioMixer4_F32                   mix[3];         // 3 mixers to sum 10 voices
+AudioMixer4_F32                   finalMix;       // Sum of the 3 mixers
+
+AudioFilterStateVariable_F32      dlyFiltL;
+AudioFilterStateVariable_F32      dlyFiltR;
+AudioEffectDelay_F32              dlyL;
+AudioEffectDelay_F32              dlyR;
+AudioMixer4_F32                   dlyMixL;
+AudioMixer4_F32                   dlyMixR;
+AudioEffectFreeverb_F32           reverb;
+AudioMixer4_F32                   fxL;
+AudioMixer4_F32                   fxR;
+
+AudioConvert_F32toI16             convL;
+AudioConvert_F32toI16             convR;
+AudioOutputI2S                    i2s1;
+AudioControlSGTL5000              sgtl5000_1;
+
+// PATCHCORDS (Array of Pointers)
+AudioConnection_F32* patch_lfoA_lfoAenv[NUM_VOICES];
+AudioConnection_F32* patch_lfoAenv_modMix[NUM_VOICES];
+AudioConnection_F32* patch_lfoAenv_vcoB[NUM_VOICES];
+AudioConnection_F32* patch_lfoAenv_vcoC[NUM_VOICES];
+AudioConnection_F32* patch_lfoAenv_sub[NUM_VOICES];
+AudioConnection_F32* patch_lfoAenv_filterMix[NUM_VOICES];
+
+AudioConnection_F32* patch_lfoB_vcoA[NUM_VOICES];
+AudioConnection_F32* patch_lfoB_vcoB[NUM_VOICES];
+
+AudioConnection_F32* patch_modMix_vcoA[NUM_VOICES];
+
+AudioConnection_F32* patch_sub_voiceMix[NUM_VOICES];
+AudioConnection_F32* patch_vcoA_voiceMix[NUM_VOICES];
+AudioConnection_F32* patch_vcoB_voiceMix[NUM_VOICES];
+AudioConnection_F32* patch_vcoB_modMix[NUM_VOICES];
+AudioConnection_F32* patch_vcoC_voiceMix[NUM_VOICES];
+
+AudioConnection_F32* patch_voiceMix_filter[NUM_VOICES];
+
+AudioConnection_F32* patch_dc_filterEnv[NUM_VOICES];
+AudioConnection_F32* patch_filterEnv_filterMix[NUM_VOICES];
+AudioConnection_F32* patch_filterMix_filter[NUM_VOICES];
+
+AudioConnection_F32* patch_filter_filterMode0[NUM_VOICES];
+AudioConnection_F32* patch_filter_filterMode1[NUM_VOICES];
+
+AudioConnection_F32* patch_filterMode_env[NUM_VOICES];
+AudioConnection_F32* patch_env_mix[NUM_VOICES];
+
+// GLOBAL CONNECTIONS
+AudioConnection_F32 patchGlobal_lfoAenv_read(lfoAenv[0], lfoAread1);
+
+AudioConnection_F32 patchGlobal_mix0_finalMix(mix[0], 0, finalMix, 0);
+AudioConnection_F32 patchGlobal_mix1_finalMix(mix[1], 0, finalMix, 1);
+AudioConnection_F32 patchGlobal_mix2_finalMix(mix[2], 0, finalMix, 2);
+
+AudioConnection_F32 patchGlobal_finalMix_fxL(finalMix, 0, fxL, 0);
+AudioConnection_F32 patchGlobal_finalMix_reverb(finalMix, reverb);
+AudioConnection_F32 patchGlobal_finalMix_fxR(finalMix, 0, fxR, 0);
+AudioConnection_F32 patchGlobal_finalMix_dlyMixL(finalMix, 0, dlyMixL, 0);
+AudioConnection_F32 patchGlobal_finalMix_dlyMixR(finalMix, 0, dlyMixR, 0);
+
+AudioConnection_F32 patchGlobal_dlyFiltR_dlyMixR(dlyFiltR, 0, dlyMixR, 1);
+AudioConnection_F32 patchGlobal_dlyFiltL_dlyMixL(dlyFiltL, 0, dlyMixL, 1);
+AudioConnection_F32 patchGlobal_dlyL_dlyFiltL(dlyL, 0, dlyFiltL, 0);
+AudioConnection_F32 patchGlobal_dlyR_dlyFiltR(dlyR, 0, dlyFiltR, 0);
+
+AudioConnection_F32 patchGlobal_dlyMixR_fxR(dlyMixR, 0, fxR, 2);
+AudioConnection_F32 patchGlobal_dlyMixR_dlyR(dlyMixR, dlyR);
+AudioConnection_F32 patchGlobal_dlyMixL_fxL(dlyMixL, 0, fxL, 2);
+AudioConnection_F32 patchGlobal_dlyMixL_dlyL(dlyMixL, dlyL);
+
+AudioConnection_F32 patchGlobal_reverb_fxL(reverb, 0, fxL, 1);
+AudioConnection_F32 patchGlobal_reverb_fxR(reverb, 0, fxR, 1);
+
+AudioConnection_F32 patchGlobal_fxL_convL(fxL, 0, convL, 0);
+AudioConnection_F32 patchGlobal_fxR_convR(fxR, 0, convR, 0);
+
+AudioConnection patchGlobal_convL_i2s(convL, 0, i2s1, 0);
+AudioConnection patchGlobal_convR_i2s(convR, 0, i2s1, 1);
+// --- END AUTO-GENERATED BLOCK ---
 
 #include <EEPROMex.h>
 #include <MIDI.h>
@@ -316,23 +159,11 @@ const float noteFreqs[128] = {
     7902.133, 8372.018, 8869.844, 9397.273, 9956.063, 10548.08, 11175.3,
     11839.82, 12543.85};
 
-int note1freq;
-int note2freq;
-int note3freq;
-int note4freq;
-int note5freq;
-int note6freq;
 
 int voices;
 
 // checks if notes are on or not
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool env1on = false;
-bool env2on = false;
-bool env3on = false;
-bool env4on = false;
-bool env5on = false;
-bool env6on = false;
 
 // int vol of vcos.
 float vcoVol = 0.07;
