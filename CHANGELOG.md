@@ -17,3 +17,5 @@
   - `i_noteOn.ino`: Set `parameterChanged = true` during `NoteOn` events to correctly schedule pitch mapping updates.
 - **Memory Optimization:**
   - `TeensySynth.ino`: Added `PROGMEM` keyword to all 28 arbitrary waveform array declarations (`wave1` to `wave28`) to ensure they reside in Flash memory instead of tying up RAM.
+- **Filter Cutoff Optimization:**
+  - `g_params.ino`: Replaced linear filter cutoff mapping with an exponential curve (`pow`) for a more natural, musically responsive potentiometer sweep from 15Hz to 15kHz.
