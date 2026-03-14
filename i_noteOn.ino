@@ -8,9 +8,9 @@ void myNoteOn(byte channel, byte note, byte velocity) {
     unsigned long oldestTime = 0xFFFFFFFF; // Max value
     int oldestVoice = 0;
 
-    // 1. Try to find a free voice
+    // 1. Try to find a completely free voice (key released AND envelope finished)
     for (int i = 0; i < NUM_VOICES; i++) {
-      if (!voiceIsOn[i]) {
+      if (!voiceIsOn[i] && !voices[i].env.isActive()) {
         foundVoice = i;
         break;
       }
