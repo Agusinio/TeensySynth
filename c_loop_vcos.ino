@@ -1,6 +1,10 @@
 void loop() {
-  usbMIDI.read();
-  MIDI.read();
+  while (usbMIDI.read()) {
+    // Process all incoming USB MIDI messages
+  }
+  while (MIDI.read()) {
+    // Process all incoming Serial MIDI messages
+  }
 
   if (activeVoices < 0) {
     activeVoices = 0;
