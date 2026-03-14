@@ -15,3 +15,5 @@
   - `c_loop_vcos.ino` and `d_filter_lfos.ino`: Wrapped performance-critical parameter streaming loops in `if (parameterChanged || preset == 0)`.
   - `g_params.ino`: Added logic to set `parameterChanged = true` whenever a hardware input (potentiometer, switch, pitch bend) crosses its update threshold in Preset logic.
   - `i_noteOn.ino`: Set `parameterChanged = true` during `NoteOn` events to correctly schedule pitch mapping updates.
+- **Memory Optimization:**
+  - `TeensySynth.ino`: Added `PROGMEM` keyword to all 28 arbitrary waveform array declarations (`wave1` to `wave28`) to ensure they reside in Flash memory instead of tying up RAM.
