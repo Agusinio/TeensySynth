@@ -9,78 +9,63 @@
 const int NUM_VOICES = 10;
 
 // VOICE COMPONENTS
-AudioSynthWaveform_F32            lfoA[NUM_VOICES];
-AudioSynthWaveform_F32            lfoB[NUM_VOICES];
-AudioEffectEnvelope_F32           lfoAenv[NUM_VOICES];
+struct Voice {
+    AudioSynthWaveform_F32            lfoA;
+    AudioSynthWaveform_F32            lfoB;
+    AudioEffectEnvelope_F32           lfoAenv;
 
-AudioSynthWaveformModulated_F32   vcoA[NUM_VOICES];
-AudioSynthWaveformModulated_F32   vcoB[NUM_VOICES];
-AudioSynthWaveformModulated_F32   vcoC[NUM_VOICES];
-AudioSynthWaveformModulated_F32   sub[NUM_VOICES];
+    AudioSynthWaveformModulated_F32   vcoA;
+    AudioSynthWaveformModulated_F32   vcoB;
+    AudioSynthWaveformModulated_F32   vcoC;
+    AudioSynthWaveformModulated_F32   sub;
 
-AudioMixer4_F32                   modMix[NUM_VOICES];
-AudioMixer4_F32                   voiceMix[NUM_VOICES];
+    AudioMixer4_F32                   modMix;
+    AudioMixer4_F32                   voiceMix;
 
-AudioSynthWaveformDc_F32          dc[NUM_VOICES];
-AudioEffectEnvelope_F32           filterEnv[NUM_VOICES];
-AudioMixer4_F32                   filterMix[NUM_VOICES];
-AudioFilterStateVariable_F32      filter[NUM_VOICES];
-AudioMixer4_F32                   filterMode[NUM_VOICES];
-AudioEffectEnvelope_F32           env[NUM_VOICES];
+    AudioSynthWaveformDc_F32          dc;
+    AudioEffectEnvelope_F32           filterEnv;
+    AudioMixer4_F32                   filterMix;
+    AudioFilterStateVariable_F32      filter;
+    AudioMixer4_F32                   filterMode;
+    AudioEffectEnvelope_F32           env;
 
-// GLOBAL COMPONENTS
-AudioAnalyzeRMS_F32               lfoAread1;
-AudioMixer4_F32                   mix[3];         // 3 mixers to sum 10 voices
-AudioMixer4_F32                   finalMix;       // Sum of the 3 mixers
+    // PATCHCORDS (Array of Pointers)
+    AudioConnection_F32* patch_lfoA_lfoAenv;
+    AudioConnection_F32* patch_lfoAenv_modMix;
+    AudioConnection_F32* patch_lfoAenv_vcoB;
+    AudioConnection_F32* patch_lfoAenv_vcoC;
+    AudioConnection_F32* patch_lfoAenv_sub;
+    AudioConnection_F32* patch_lfoAenv_filterMix;
 
-AudioFilterStateVariable_F32      dlyFiltL;
-AudioFilterStateVariable_F32      dlyFiltR;
-AudioEffectDelay_F32              dlyL;
-AudioEffectDelay_F32              dlyR;
-AudioMixer4_F32                   dlyMixL;
-AudioMixer4_F32                   dlyMixR;
-AudioEffectFreeverb_F32           reverb;
-AudioMixer4_F32                   fxL;
-AudioMixer4_F32                   fxR;
+    AudioConnection_F32* patch_lfoB_vcoA;
+    AudioConnection_F32* patch_lfoB_vcoB;
 
-AudioConvert_F32toI16             convL;
-AudioConvert_F32toI16             convR;
-AudioOutputI2S                    i2s1;
-AudioControlSGTL5000              sgtl5000_1;
+    AudioConnection_F32* patch_modMix_vcoA;
 
-// PATCHCORDS (Array of Pointers)
-AudioConnection_F32* patch_lfoA_lfoAenv[NUM_VOICES];
-AudioConnection_F32* patch_lfoAenv_modMix[NUM_VOICES];
-AudioConnection_F32* patch_lfoAenv_vcoB[NUM_VOICES];
-AudioConnection_F32* patch_lfoAenv_vcoC[NUM_VOICES];
-AudioConnection_F32* patch_lfoAenv_sub[NUM_VOICES];
-AudioConnection_F32* patch_lfoAenv_filterMix[NUM_VOICES];
+    AudioConnection_F32* patch_sub_voiceMix;
+    AudioConnection_F32* patch_vcoA_voiceMix;
+    AudioConnection_F32* patch_vcoB_voiceMix;
+    AudioConnection_F32* patch_vcoB_modMix;
+    AudioConnection_F32* patch_vcoC_voiceMix;
 
-AudioConnection_F32* patch_lfoB_vcoA[NUM_VOICES];
-AudioConnection_F32* patch_lfoB_vcoB[NUM_VOICES];
+    AudioConnection_F32* patch_voiceMix_filter;
 
-AudioConnection_F32* patch_modMix_vcoA[NUM_VOICES];
+    AudioConnection_F32* patch_dc_filterEnv;
+    AudioConnection_F32* patch_filterEnv_filterMix;
+    AudioConnection_F32* patch_filterMix_filter;
 
-AudioConnection_F32* patch_sub_voiceMix[NUM_VOICES];
-AudioConnection_F32* patch_vcoA_voiceMix[NUM_VOICES];
-AudioConnection_F32* patch_vcoB_voiceMix[NUM_VOICES];
-AudioConnection_F32* patch_vcoB_modMix[NUM_VOICES];
-AudioConnection_F32* patch_vcoC_voiceMix[NUM_VOICES];
+    AudioConnection_F32* patch_filter_filterMode0;
+    AudioConnection_F32* patch_filter_filterMode1;
 
-AudioConnection_F32* patch_voiceMix_filter[NUM_VOICES];
+    AudioConnection_F32* patch_filterMode_env;
+    AudioConnection_F32* patch_env_mix;
+};
 
-AudioConnection_F32* patch_dc_filterEnv[NUM_VOICES];
-AudioConnection_F32* patch_filterEnv_filterMix[NUM_VOICES];
-AudioConnection_F32* patch_filterMix_filter[NUM_VOICES];
+Voice voices[NUM_VOICES];
 
-AudioConnection_F32* patch_filter_filterMode0[NUM_VOICES];
-AudioConnection_F32* patch_filter_filterMode1[NUM_VOICES];
-
-AudioConnection_F32* patch_filterMode_env[NUM_VOICES];
-AudioConnection_F32* patch_env_mix[NUM_VOICES];
 
 // GLOBAL CONNECTIONS
-AudioConnection_F32 patchGlobal_lfoAenv_read(lfoAenv[0], lfoAread1);
+AudioConnection_F32 patchGlobal_lfoAenv_read(voices[0].lfoAenv, lfoAread1);
 
 AudioConnection_F32 patchGlobal_mix0_finalMix(mix[0], 0, finalMix, 0);
 AudioConnection_F32 patchGlobal_mix1_finalMix(mix[1], 0, finalMix, 1);
@@ -160,7 +145,7 @@ const float noteFreqs[128] = {
     11839.82, 12543.85};
 
 
-int voices;
+int activeVoices;
 
 // checks if notes are on or not
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

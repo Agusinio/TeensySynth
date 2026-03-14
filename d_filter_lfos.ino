@@ -1,61 +1,61 @@
 
   for (int i=0; i<NUM_VOICES; i++) {
     // filter
-    filter[i].frequency(cut);
-    filter[i].resonance(res);
+    voices[i].filter.frequency(cut);
+    voices[i].filter.resonance(res);
 
     // filter env
-    filterEnv[i].attack(filtAtt);
-    filterEnv[i].decay(filtDec);
-    filterEnv[i].release(filtDec);
-    dc[i].amplitude(filtAmt);
+    voices[i].filterEnv.attack(filtAtt);
+    voices[i].filterEnv.decay(filtDec);
+    voices[i].filterEnv.release(filtDec);
+    voices[i].dc.amplitude(filtAmt);
 
     // filter mode
     if (filterMode == 1) { // Highpass
-      filterMode[i].gain(0, 1);
-      filterMode[i].gain(1, 0);
+      voices[i].filterMode.gain(0, 1);
+      voices[i].filterMode.gain(1, 0);
     } else if (filterMode == 0) { // Lowpass
-      filterMode[i].gain(0, 0);
-      filterMode[i].gain(1, 1);
+      voices[i].filterMode.gain(0, 0);
+      voices[i].filterMode.gain(1, 1);
     }
 
     // lfo A params
-    lfoA[i].amplitude(lfoAamp);
-    lfoA[i].frequency(lfoAfreq);
-    lfoAenv[i].delay(lfoAdel);
-    lfoAenv[i].attack(lfoAatt);
-    lfoAenv[i].decay(lfoAdec);
-    lfoAenv[i].release(lfoArel);
-    lfoAenv[i].sustain(lfoAsus);
+    voices[i].lfoA.amplitude(lfoAamp);
+    voices[i].lfoA.frequency(lfoAfreq);
+    voices[i].lfoAenv.delay(lfoAdel);
+    voices[i].lfoAenv.attack(lfoAatt);
+    voices[i].lfoAenv.decay(lfoAdec);
+    voices[i].lfoAenv.release(lfoArel);
+    voices[i].lfoAenv.sustain(lfoAsus);
 
     // lfo shape switch
-    if (lfoAshape == 0) lfoA[i].begin(WAVEFORM_SINE);
-    else if (lfoAshape == 1) lfoA[i].begin(WAVEFORM_SAWTOOTH_REVERSE);
-    else if (lfoAshape == 2) lfoA[i].begin(WAVEFORM_SAMPLE_HOLD);
+    if (lfoAshape == 0) voices[i].lfoA.begin(WAVEFORM_SINE);
+    else if (lfoAshape == 1) voices[i].lfoA.begin(WAVEFORM_SAWTOOTH_REVERSE);
+    else if (lfoAshape == 2) voices[i].lfoA.begin(WAVEFORM_SAMPLE_HOLD);
 
     // lfo B params
-    lfoB[i].amplitude(lfoBamp);
-    lfoB[i].frequency(lfoBfreq);
+    voices[i].lfoB.amplitude(lfoBamp);
+    voices[i].lfoB.frequency(lfoBfreq);
 
     // LFO A DESTINATION
     if (lfoAdest == 0) { // lfo - pitch
-      patch_lfoAenv_modMix[i]->connect();
-      patch_lfoAenv_vcoB[i]->connect();
-      patch_lfoAenv_vcoC[i]->connect();
-      patch_lfoAenv_sub[i]->connect();
-      patch_lfoAenv_filterMix[i]->disconnect();
+      voices[i].patch_lfoAenv_modMix->connect();
+      voices[i].patch_lfoAenv_vcoB->connect();
+      voices[i].patch_lfoAenv_vcoC->connect();
+      voices[i].patch_lfoAenv_sub->connect();
+      voices[i].patch_lfoAenv_filterMix->disconnect();
     } else if (lfoAdest == 1) { // lfo - filter
-      patch_lfoAenv_modMix[i]->disconnect();
-      patch_lfoAenv_vcoB[i]->disconnect();
-      patch_lfoAenv_vcoC[i]->disconnect();
-      patch_lfoAenv_sub[i]->disconnect();
-      patch_lfoAenv_filterMix[i]->connect();
+      voices[i].patch_lfoAenv_modMix->disconnect();
+      voices[i].patch_lfoAenv_vcoB->disconnect();
+      voices[i].patch_lfoAenv_vcoC->disconnect();
+      voices[i].patch_lfoAenv_sub->disconnect();
+      voices[i].patch_lfoAenv_filterMix->connect();
     } else if (lfoAdest == 2) { // lfo - amp
-      patch_lfoAenv_modMix[i]->disconnect();
-      patch_lfoAenv_vcoB[i]->disconnect();
-      patch_lfoAenv_vcoC[i]->disconnect();
-      patch_lfoAenv_sub[i]->disconnect();
-      patch_lfoAenv_filterMix[i]->disconnect();
+      voices[i].patch_lfoAenv_modMix->disconnect();
+      voices[i].patch_lfoAenv_vcoB->disconnect();
+      voices[i].patch_lfoAenv_vcoC->disconnect();
+      voices[i].patch_lfoAenv_sub->disconnect();
+      voices[i].patch_lfoAenv_filterMix->disconnect();
     }
   }
 
