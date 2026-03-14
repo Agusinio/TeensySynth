@@ -2,6 +2,9 @@ bool voiceIsOn[NUM_VOICES] = {false};
 int voiceNote[NUM_VOICES] = {0};
 unsigned long voiceStartedAt[NUM_VOICES] = {0};
 
+byte monoNoteStack[16];
+int monoNoteCount = 0;
+
 void myNoteOn(byte channel, byte note, byte velocity) {
   if (digitalRead(1) == 1) { // POLYPHONIC mode
     int foundVoice = -1;
@@ -52,13 +55,25 @@ void myNoteOn(byte channel, byte note, byte velocity) {
     }
 
   } else if (digitalRead(1) == 0) { // MONOPHONIC mode
-    // All voices play the same note (Unison or just Voice 0)
-    // To keep it simple, we just re-trigger voice 0.
-    voiceNote[0] = note;
-    voices[0].env.noteOn();
-    voices[0].filterEnv.noteOn();
-    voices[0].lfoAenv.noteOn();
-    activeVoices = 1;
+    // Note Priority (Stack) and Legato
+    if (monoNoteCount < 16) {
+      monoNoteStack[monoNoteCount] = note;
+      monoNoteCount++;
+    } else {
+      for (int i = 0; i < 15; i++) {
+        monoNoteStack[i] = monoNoteStack[i+1];
+      }
+      monoNoteStack[15] = note;
+    }
+
+    voiceNote[0] = monoNoteStack[monoNoteCount - 1];
+
+    if (activeVoices == 0) {
+      voices[0].env.noteOn();
+      voices[0].filterEnv.noteOn();
+      voices[0].lfoAenv.noteOn();
+      activeVoices = 1;
+    }
     parameterChanged = true;
   }
 }
@@ -76,7 +91,27 @@ void myNoteOff(byte channel, byte note, byte velocity) {
       }
     }
   } else if (digitalRead(1) == 0) { // MONOPHONIC mode
-    if (voiceNote[0] == note) {
+    int removeIdx = -1;
+    for (int i = 0; i < monoNoteCount; i++) {
+      if (monoNoteStack[i] == note) {
+        removeIdx = i;
+        break;
+      }
+    }
+    
+    if (removeIdx != -1) {
+      for (int i = removeIdx; i < monoNoteCount - 1; i++) {
+        monoNoteStack[i] = monoNoteStack[i+1];
+      }
+      monoNoteCount--;
+    }
+
+    if (monoNoteCount > 0) {
+      // Revert to the previous note in the stack (Note Priority)
+      voiceNote[0] = monoNoteStack[monoNoteCount - 1];
+      parameterChanged = true;
+    } else {
+      // No notes left, release envelopes
       voices[0].env.noteOff();
       voices[0].filterEnv.noteOff();
       voices[0].lfoAenv.noteOff();
