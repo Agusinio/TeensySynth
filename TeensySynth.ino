@@ -158,80 +158,76 @@ float bend;
 float oldBend = 1.0;
 bool parameterChanged = true;
 
-// voice mixer
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-float vcoAvol = 0.5;
-float vcoBvol = 0.5;
-float vcoCvol = 0.5;
-float Subvol = 0.5;
+struct Patch {
+  // voice mixer
+  float vcoAvol = 0.5;
+  float vcoBvol = 0.5;
+  float vcoCvol = 0.5;
+  float Subvol = 0.5;
+  float crossMod = 0.0;
 
-float crossMod;
+  // Tunings, octaves etc.
+  float octave = 1;
+  float octaveB = 1;
+  float octaveC = 1;
+  float tuneB = 1;
+  float tuneC = 1;
 
-// Tunings, octaves etc.
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-float octave = 1;
-float octaveB = 1;
-float octaveC = 1;
-float tuneB = 1;
-float tuneC = 1;
+  // vco shapes
+  int shapeA = 0;
+  int shapeB = 0;
+  int shapeC = 1;
 
-// vco shapes
-int shapeA;
-int shapeB;
-int shapeC = 1;
+  // filter
+  int cut = 2000;
+  float res = 1;
+  int filtAtt = 0;
+  int filtDec = 0;
+  float filtAmt = 0.0;
+  int filterMode = 0;
 
-// filter
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-int cut = 2000;
-float res = 1;
-int filtAtt;
-int filtDec;
-float filtAmt;
+  // envelope
+  int envAtt = 0;
+  int envDec = 0;
+  int envRel = 0;
+  float envSus = 0.0;
 
-int filterMode;
+  // lfo A
+  float lfoAamp = 0.0;
+  float lfoAfreq = 0.0;
+  int lfoAdel = 0;
+  int lfoAatt = 0;
+  int lfoAdec = 0;
+  int lfoArel = 0;
+  float lfoAsus = 0.0;
 
-// envelope
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-int envAtt;
-int envDec;
-int envRel;
-float envSus;
+  int lfoAshape = 0;
+  int lfoAdest = 0;
 
-// lfo A
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-float lfoAamp;
-float lfoAfreq;
-int lfoAdel;
-int lfoAatt;
-int lfoAdec;
-int lfoArel;
-float lfoAsus;
+  // lfo B
+  float lfoBamp = 0.0;
+  float lfoBfreq = 0.0;
 
-int lfoAshape;
-int lfoAdest;
+  // delay
+  float dlyAmt = 0.0;
+  float dlyTimeL = 0.0;
+  float dlyTimeR = 0.0;
+
+  // reverb
+  float revMix = 0.0;
+  float revSize = 0.0;
+};
+
+Patch currentPatch;
+Patch initPatch;
 
 // tremolo
 float ampMod;
 float readInt = 1.0001;
 unsigned long prevTime;
 
-// lfo B
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-float lfoBamp;
-float lfoBfreq;
-
-// delay
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// delay & main
 float outGain = 0.8;
-float dlyAmt;
-
-float dlyTimeL;
-float dlyTimeR;
-
-// reverb
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-float revMix;
-float revSize;
 
 // Presets
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

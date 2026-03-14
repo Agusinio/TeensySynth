@@ -13,44 +13,44 @@ void loop() {
   if (parameterChanged || preset == 0) {
     for (int i=0; i<NUM_VOICES; i++) {
     // cross mod
-    voices[i].modMix.gain(0, crossMod);
+    voices[i].modMix.gain(0, currentPatch.crossMod);
 
     // frequencies
-    voices[i].vcoA.frequency(noteFreqs[voiceNote[i]] * octave * bend);
-    voices[i].vcoB.frequency(noteFreqs[voiceNote[i]] * octave * octaveB * tuneB * bend);
-    voices[i].vcoC.frequency(noteFreqs[voiceNote[i]] * octave * octaveC * tuneC * bend);
-    voices[i].sub.frequency(noteFreqs[voiceNote[i]] / 2 * octave * bend);
+    voices[i].vcoA.frequency(noteFreqs[voiceNote[i]] * currentPatch.octave * bend);
+    voices[i].vcoB.frequency(noteFreqs[voiceNote[i]] * currentPatch.octave * currentPatch.octaveB * currentPatch.tuneB * bend);
+    voices[i].vcoC.frequency(noteFreqs[voiceNote[i]] * currentPatch.octave * currentPatch.octaveC * currentPatch.tuneC * bend);
+    voices[i].sub.frequency(noteFreqs[voiceNote[i]] / 2 * currentPatch.octave * bend);
 
     // vco Mixer
-    voices[i].voiceMix.gain(0, vcoAvol * mainVol);
-    voices[i].voiceMix.gain(1, vcoBvol * mainVol);
-    voices[i].voiceMix.gain(2, vcoCvol * mainVol);
-    voices[i].voiceMix.gain(3, Subvol * mainVol);
+    voices[i].voiceMix.gain(0, currentPatch.vcoAvol * mainVol);
+    voices[i].voiceMix.gain(1, currentPatch.vcoBvol * mainVol);
+    voices[i].voiceMix.gain(2, currentPatch.vcoCvol * mainVol);
+    voices[i].voiceMix.gain(3, currentPatch.Subvol * mainVol);
 
     // vco A shape
-    if (shapeA == 0) {
+    if (currentPatch.shapeA == 0) {
       voices[i].vcoA.begin(WAVEFORM_PULSE);
-    } else if (shapeA == 1) {
+    } else if (currentPatch.shapeA == 1) {
       voices[i].vcoA.begin(WAVEFORM_SAWTOOTH);
       voices[i].vcoA.amplitude(vcoVol);
-    } else if (shapeA == 2) {
+    } else if (currentPatch.shapeA == 2) {
       voices[i].vcoA.begin(WAVEFORM_TRIANGLE_VARIABLE);
       voices[i].vcoA.amplitude(vcoVol * 1.5);
     }
 
     // vco B shape
-    if (shapeB == 0) {
+    if (currentPatch.shapeB == 0) {
       voices[i].vcoB.begin(WAVEFORM_PULSE);
-    } else if (shapeB == 1) {
+    } else if (currentPatch.shapeB == 1) {
       voices[i].vcoB.begin(WAVEFORM_SAWTOOTH);
       voices[i].vcoB.amplitude(vcoVol);
-    } else if (shapeB == 2) {
+    } else if (currentPatch.shapeB == 2) {
       voices[i].vcoB.begin(WAVEFORM_TRIANGLE_VARIABLE);
       voices[i].vcoB.amplitude(vcoVol * 1.5);
     }
     
     // Vco C shapes
-    switch(shapeC) {
+    switch(currentPatch.shapeC) {
       case 1 ... 32: voices[i].vcoC.arbitraryWaveform(wave1, 2000); break;
       case 37 ... 69: voices[i].vcoC.arbitraryWaveform(wave2, 2000); break;
       case 73 ... 105: voices[i].vcoC.arbitraryWaveform(wave3, 2000); break;

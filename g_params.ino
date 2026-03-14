@@ -9,13 +9,13 @@ if (millis() - prevTimer > timer) {
     oldBend = bend;
   }
 
-  // main octave
+  // main currentPatch.octave
   if (digitalRead(6) == 1) {
-    octave = 0.5;
+    currentPatch.octave = 0.5;
   } else if (digitalRead(6) == 0 && digitalRead(7) == 0) {
-    octave = 1;
+    currentPatch.octave = 1;
   } else if (digitalRead(7) == 1) {
-    octave = 2;
+    currentPatch.octave = 2;
   }
 
   ///////////////  EDIT MODE EDIT
@@ -24,119 +24,119 @@ if (millis() - prevTimer > timer) {
   if (preset == 0) {
 
     if (digitalRead(8) == 1) {
-      octaveB = 0.5;
+      currentPatch.octaveB = 0.5;
     } else if (digitalRead(8) == 0 && digitalRead(12) == 0) {
-      octaveB = 1;
+      currentPatch.octaveB = 1;
     } else if (digitalRead(12) == 1) {
-      octaveB = 2;
+      currentPatch.octaveB = 2;
     }
 
     if (digitalRead(10) == 1) {
-      octaveC = 0.5;
+      currentPatch.octaveC = 0.5;
     } else if (digitalRead(10) == 0 && digitalRead(11) == 0) {
-      octaveC = 1;
+      currentPatch.octaveC = 1;
     } else if (digitalRead(11) == 1) {
-      octaveC = 2;
+      currentPatch.octaveC = 2;
     }
 
     if (digitalRead(2) == 1) {
-      shapeA = 0;
+      currentPatch.shapeA = 0;
     } else if (digitalRead(2) == 0 && digitalRead(3) == 0) {
-      shapeA = 1;
+      currentPatch.shapeA = 1;
     } else if (digitalRead(3) == 1) {
-      shapeA = 2;
+      currentPatch.shapeA = 2;
     }
 
     if (digitalRead(4) == 1) {
-      shapeB = 0;
+      currentPatch.shapeB = 0;
     } else if (digitalRead(4) == 0 && digitalRead(5) == 0) {
-      shapeB = 1;
+      currentPatch.shapeB = 1;
     } else if (digitalRead(5) == 1) {
-      shapeB = 2;
+      currentPatch.shapeB = 2;
     }
 
-    shapeC = analogRead(A4);
+    currentPatch.shapeC = analogRead(A4);
 
     if (analogRead(A2) < 512) {
-      tuneB = ((float)analogRead(A2) / 1023) + 0.5;
+      currentPatch.tuneB = ((float)analogRead(A2) / 1023) + 0.5;
     } else {
-      tuneB = ((float)analogRead(A2) / 510);
+      currentPatch.tuneB = ((float)analogRead(A2) / 510);
     }
 
     if (analogRead(A3) < 512) {
-      tuneC = ((float)analogRead(A3) / 1023) + 0.5;
+      currentPatch.tuneC = ((float)analogRead(A3) / 1023) + 0.5;
     } else {
-      tuneC = ((float)analogRead(A3) / 510);
+      currentPatch.tuneC = ((float)analogRead(A3) / 510);
     }
 
-    crossMod = (float)analogRead(A1) / 512;
+    currentPatch.crossMod = (float)analogRead(A1) / 512;
 
-    vcoAvol = (float)analogRead(A5) / 1023;
-    vcoBvol = (float)analogRead(A6) / 1023;
-    vcoCvol = (float)analogRead(A7) / 1023;
-    Subvol = (float)analogRead(A21) / 1023;
+    currentPatch.vcoAvol = (float)analogRead(A5) / 1023;
+    currentPatch.vcoBvol = (float)analogRead(A6) / 1023;
+    currentPatch.vcoCvol = (float)analogRead(A7) / 1023;
+    currentPatch.Subvol = (float)analogRead(A21) / 1023;
 
     cutpot = analogRead(A13);
     if (smoothedCutpot < 0) {
       smoothedCutpot = cutpot;
     }
     smoothedCutpot += 0.05 * (cutpot - smoothedCutpot);
-    cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
+    currentPatch.cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
 
-    res = 4.5 * (float)analogRead(A12) / 1023 + 1.1;
-    filtAtt = (3000 * (float)mux0 / 1023);
-    filtDec = (3000 * (float)mux1 / 1023);
-    filtAmt = (float)mux2 / 512 - 1;
+    currentPatch.res = 4.5 * (float)analogRead(A12) / 1023 + 1.1;
+    currentPatch.filtAtt = (3000 * (float)mux0 / 1023);
+    currentPatch.filtDec = (3000 * (float)mux1 / 1023);
+    currentPatch.filtAmt = (float)mux2 / 512 - 1;
     if (digitalRead(13) == 1) {
-      filterMode = 1;
+      currentPatch.filterMode = 1;
     } else if (digitalRead(13) == 0) {
-      filterMode = 0;
+      currentPatch.filterMode = 0;
     }
 
-    envAtt = 3000 * (float)analogRead(A25) / 1023;
-    envDec = 5000 * (float)analogRead(A26) / 1023;
-    envRel = 5000 * (float)analogRead(A26) / 1023;
-    envSus = (float)analogRead(A10) / 100;
+    currentPatch.envAtt = 3000 * (float)analogRead(A25) / 1023;
+    currentPatch.envDec = 5000 * (float)analogRead(A26) / 1023;
+    currentPatch.envRel = 5000 * (float)analogRead(A26) / 1023;
+    currentPatch.envSus = (float)analogRead(A10) / 100;
 
-    if (lfoAdest == 0 && lfoAshape != 2) {
-      lfoAamp = (float)mux3 / 1024 / 10;
+    if (currentPatch.lfoAdest == 0 && currentPatch.lfoAshape != 2) {
+      currentPatch.lfoAamp = (float)mux3 / 1024 / 10;
     } else {
-      lfoAamp = (float)mux3 / 1024 / 3;
+      currentPatch.lfoAamp = (float)mux3 / 1024 / 3;
     }
-    lfoAfreq = 20 * (float)mux4 / 1024 + 0.1;
-    lfoAdel = 2000 * (float)mux5 / 1024;
-    lfoAatt = 3000 * (float)mux5 / 1024;
-    lfoAdec = 4000 * (float)mux6 / 1024;
-    lfoArel = 4000 * (float)mux6 / 1024;
-    lfoAsus = (float)mux7 / 1024;
+    currentPatch.lfoAfreq = 20 * (float)mux4 / 1024 + 0.1;
+    currentPatch.lfoAdel = 2000 * (float)mux5 / 1024;
+    currentPatch.lfoAatt = 3000 * (float)mux5 / 1024;
+    currentPatch.lfoAdec = 4000 * (float)mux6 / 1024;
+    currentPatch.lfoArel = 4000 * (float)mux6 / 1024;
+    currentPatch.lfoAsus = (float)mux7 / 1024;
 
     if (digitalRead(24) == 1) { // lfo - pitch
-      lfoAdest = 0;
+      currentPatch.lfoAdest = 0;
     } else if (digitalRead(24) == 0 && digitalRead(25) == 0) { // lfo - filter
-      lfoAdest = 1;
+      currentPatch.lfoAdest = 1;
     } else if (digitalRead(25) == 1) { // lfo - amp
-      lfoAdest = 2;
+      currentPatch.lfoAdest = 2;
     }
 
     if (digitalRead(26) == 1) {
-      lfoAshape = 0;
+      currentPatch.lfoAshape = 0;
     } else if (digitalRead(26) == 0 && digitalRead(27) == 0) {
-      lfoAshape = 1;
+      currentPatch.lfoAshape = 1;
     } else if (digitalRead(27) == 1) {
-      lfoAshape = 2;
+      currentPatch.lfoAshape = 2;
     }
 
-    lfoBamp = (float)analogRead(A14) / 1023;
-    lfoBfreq = 5 * (float)analogRead(A22) / 1023 + 0.1;
+    currentPatch.lfoBamp = (float)analogRead(A14) / 1023;
+    currentPatch.lfoBfreq = 5 * (float)analogRead(A22) / 1023 + 0.1;
 
-    dlyAmt = (float)analogRead(A16) / 1100 - 0.1;
-    dlyTimeL = analogRead(A17) / 2.5;
-    dlyTimeR = analogRead(A17) / 1.25;
-    revMix = ((float)analogRead(A19) / 1024 / 1.5);
-    revSize = ((float)analogRead(A18) / 1024 - 0.01);
+    currentPatch.dlyAmt = (float)analogRead(A16) / 1100 - 0.1;
+    currentPatch.dlyTimeL = analogRead(A17) / 2.5;
+    currentPatch.dlyTimeR = analogRead(A17) / 1.25;
+    currentPatch.revMix = ((float)analogRead(A19) / 1024 / 1.5);
+    currentPatch.revSize = ((float)analogRead(A18) / 1024 - 0.01);
 
-    if (dlyAmt < 0) {
-      dlyAmt = 0;
+    if (currentPatch.dlyAmt < 0) {
+      currentPatch.dlyAmt = 0;
     }
 
   } else {
@@ -151,7 +151,7 @@ if (millis() - prevTimer > timer) {
     ////////////////////////////////////////////////////////////////7////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // octave vco B
+    // currentPatch.octave vco B
     if (digitalRead(8) == 1) {
       octBsw = 0;
     } else if (digitalRead(8) == 0 && digitalRead(12) == 0) {
@@ -161,18 +161,18 @@ if (millis() - prevTimer > timer) {
     }
     if (oldOctBsw < octBsw || oldOctBsw > octBsw) {
       if (digitalRead(8) == 1) {
-        octaveB = 0.5;
+        currentPatch.octaveB = 0.5;
       } else if (digitalRead(8) == 0 && digitalRead(12) == 0) {
-        octaveB = 1;
+        currentPatch.octaveB = 1;
       } else if (digitalRead(12) == 1) {
-        octaveB = 2;
+        currentPatch.octaveB = 2;
       }
       oldOctBsw = octBsw;
       parameterChanged = true;
-      Serial.println("octave B switch");
+      Serial.println("currentPatch.octave B switch");
     }
 
-    // octave vco C
+    // currentPatch.octave vco C
     if (digitalRead(10) == 1) {
       octCsw = 0;
     } else if (digitalRead(10) == 0 && digitalRead(11) == 0) {
@@ -182,15 +182,15 @@ if (millis() - prevTimer > timer) {
     }
     if (oldOctCsw < octCsw || oldOctCsw > octCsw) {
       if (digitalRead(10) == 1) {
-        octaveC = 0.5;
+        currentPatch.octaveC = 0.5;
       } else if (digitalRead(10) == 0 && digitalRead(11) == 0) {
-        octaveC = 1;
+        currentPatch.octaveC = 1;
       } else if (digitalRead(11) == 1) {
-        octaveC = 2;
+        currentPatch.octaveC = 2;
       }
       oldOctCsw = octCsw;
       parameterChanged = true;
-      Serial.println("octave C switch");
+      Serial.println("currentPatch.octave C switch");
     }
 
     //////////// SHAPES SHAPES
@@ -207,11 +207,11 @@ if (millis() - prevTimer > timer) {
     }
     if (oldShapeAsw < shapeAsw || oldShapeAsw > shapeAsw) {
       if (digitalRead(2) == 1) {
-        shapeA = 0;
+        currentPatch.shapeA = 0;
       } else if (digitalRead(2) == 0 && digitalRead(3) == 0) {
-        shapeA = 1;
+        currentPatch.shapeA = 1;
       } else if (digitalRead(3) == 1) {
-        shapeA = 2;
+        currentPatch.shapeA = 2;
       }
       oldShapeAsw = shapeAsw;
       parameterChanged = true;
@@ -228,11 +228,11 @@ if (millis() - prevTimer > timer) {
     }
     if (oldShapeBsw < shapeBsw || oldShapeBsw > shapeBsw) {
       if (digitalRead(4) == 1) {
-        shapeB = 0;
+        currentPatch.shapeB = 0;
       } else if (digitalRead(4) == 0 && digitalRead(5) == 0) {
-        shapeB = 1;
+        currentPatch.shapeB = 1;
       } else if (digitalRead(5) == 1) {
-        shapeB = 2;
+        currentPatch.shapeB = 2;
       }
       oldShapeBsw = shapeBsw;
       parameterChanged = true;
@@ -243,7 +243,7 @@ if (millis() - prevTimer > timer) {
     shapeCpot = analogRead(A4);
     if (oldShapeCpot + tresh2 < shapeCpot ||
         oldShapeCpot - tresh2 > shapeCpot) {
-      shapeC = analogRead(A4);
+      currentPatch.shapeC = analogRead(A4);
       oldShapeCpot = shapeCpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("shape C turn");
@@ -253,37 +253,37 @@ if (millis() - prevTimer > timer) {
     /////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // tuneB
+    // currentPatch.tuneB
     tuneBpot = analogRead(A2);
     if (oldTuneBpot + tresh < tuneBpot || oldTuneBpot - tresh > tuneBpot) {
       if (analogRead(A2) < 512) {
-        tuneB = ((float)analogRead(A2) / 1023) + 0.5;
+        currentPatch.tuneB = ((float)analogRead(A2) / 1023) + 0.5;
       } else {
-        tuneB = ((float)analogRead(A2) / 510);
+        currentPatch.tuneB = ((float)analogRead(A2) / 510);
       }
       oldTuneBpot = tuneBpot + tresh / 2;
       parameterChanged = true;
-      Serial.println("tuneB turn");
+      Serial.println("currentPatch.tuneB turn");
     }
 
-    // tuneC
+    // currentPatch.tuneC
     tuneCpot = analogRead(A3);
     if (oldTuneCpot + tresh < tuneCpot || oldTuneCpot - tresh > tuneCpot) {
       if (analogRead(A3) < 512) {
-        tuneC = ((float)analogRead(A3) / 1023) + 0.5;
+        currentPatch.tuneC = ((float)analogRead(A3) / 1023) + 0.5;
       } else {
-        tuneC = ((float)analogRead(A3) / 510);
+        currentPatch.tuneC = ((float)analogRead(A3) / 510);
       }
       oldTuneCpot = tuneCpot + tresh / 2;
       parameterChanged = true;
-      Serial.println("tuneC turn");
+      Serial.println("currentPatch.tuneC turn");
     }
 
     // Cross mod
     crossModpot = analogRead(A1);
     if (oldCrossModpot + tresh < crossModpot ||
         oldCrossModpot - tresh > crossModpot) {
-      crossMod = (float)analogRead(A1) / 512;
+      currentPatch.crossMod = (float)analogRead(A1) / 512;
       oldCrossModpot = crossModpot + tresh / 2;
       parameterChanged = true;
       Serial.println("crossmod turn");
@@ -295,7 +295,7 @@ if (millis() - prevTimer > timer) {
 
     volApot = analogRead(A5);
     if (oldVolApot + tresh2 < volApot || oldVolApot - tresh2 > volApot) {
-      vcoAvol = (float)analogRead(A5) / 1023;
+      currentPatch.vcoAvol = (float)analogRead(A5) / 1023;
       oldVolApot = volApot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("volA turn");
@@ -303,7 +303,7 @@ if (millis() - prevTimer > timer) {
 
     volBpot = analogRead(A6);
     if (oldVolBpot + tresh2 < volBpot || oldVolBpot - tresh2 > volBpot) {
-      vcoBvol = (float)analogRead(A6) / 1023;
+      currentPatch.vcoBvol = (float)analogRead(A6) / 1023;
       oldVolBpot = volBpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("volB turn");
@@ -311,7 +311,7 @@ if (millis() - prevTimer > timer) {
 
     volCpot = analogRead(A7);
     if (oldVolCpot + tresh2 < volCpot || oldVolCpot - tresh2 > volCpot) {
-      vcoCvol = (float)analogRead(A7) / 1023;
+      currentPatch.vcoCvol = (float)analogRead(A7) / 1023;
       oldVolCpot = volCpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("volC turn");
@@ -320,7 +320,7 @@ if (millis() - prevTimer > timer) {
     volSubpot = analogRead(A21);
     if (oldVolSubpot + tresh2 < volSubpot ||
         oldVolSubpot - tresh2 > volSubpot) {
-      Subvol = (float)analogRead(A21) / 1023;
+      currentPatch.Subvol = (float)analogRead(A21) / 1023;
       oldVolSubpot = volSubpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("vol sub turn");
@@ -341,32 +341,32 @@ if (millis() - prevTimer > timer) {
     if (oldCutpot + tresh < cutpot || oldCutpot - tresh > cutpot) {
       targetCutpot = cutpot;
       oldCutpot = cutpot + tresh / 2;
-      Serial.println("cut turn");
+      Serial.println("currentPatch.cut turn");
     }
 
     if (abs(smoothedCutpot - targetCutpot) > 0.5) {
       smoothedCutpot += 0.05 * (targetCutpot - smoothedCutpot);
-      cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
+      currentPatch.cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
       parameterChanged = true;
     } else if (smoothedCutpot != targetCutpot) {
       smoothedCutpot = targetCutpot;
-      cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
+      currentPatch.cut = 15.0 * pow(1000.0, smoothedCutpot / 1023.0);
       parameterChanged = true;
     }
 
     respot = analogRead(A12);
     if (oldRespot + tresh2 < respot || oldRespot - tresh2 > respot) {
-      res = 4.5 * (float)analogRead(A12) / 1023 + 1.1;
+      currentPatch.res = 4.5 * (float)analogRead(A12) / 1023 + 1.1;
       oldRespot = respot + tresh2 / 2;
       parameterChanged = true;
-      Serial.println("res turn");
+      Serial.println("currentPatch.res turn");
     }
 
     // Filter Env
 
     fAttpot = mux0;
     if (oldFAttpot + tresh2 < fAttpot || oldFAttpot - tresh2 > fAttpot) {
-      filtAtt = (3000 * (float)mux0 / 1023);
+      currentPatch.filtAtt = (3000 * (float)mux0 / 1023);
       oldFAttpot = fAttpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("filter attack turn");
@@ -374,7 +374,7 @@ if (millis() - prevTimer > timer) {
 
     fDecpot = mux1;
     if (oldFDecpot + tresh2 < fDecpot || oldFDecpot - tresh2 > fDecpot) {
-      filtDec = (3000 * (float)mux1 / 1023);
+      currentPatch.filtDec = (3000 * (float)mux1 / 1023);
       oldFDecpot = fDecpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("filter decay turn");
@@ -382,7 +382,7 @@ if (millis() - prevTimer > timer) {
 
     fAmtpot = mux2;
     if (oldFAmtpot + tresh2 < fAmtpot || oldFAmtpot - tresh2 > fAmtpot) {
-      filtAmt = (float)mux2 / 512 - 1;
+      currentPatch.filtAmt = (float)mux2 / 512 - 1;
       oldFAmtpot = fAmtpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("filter Amt turn");
@@ -396,9 +396,9 @@ if (millis() - prevTimer > timer) {
     }
     if (oldFiltModesw < filtModesw || oldFiltModesw > filtModesw) {
       if (digitalRead(13) == 1) {
-        filterMode = 1;
+        currentPatch.filterMode = 1;
       } else if (digitalRead(13) == 0) {
-        filterMode = 0;
+        currentPatch.filterMode = 0;
       }
       oldFiltModesw = filtModesw;
       parameterChanged = true;
@@ -411,7 +411,7 @@ if (millis() - prevTimer > timer) {
 
     attpot = analogRead(A25);
     if (oldAttpot + tresh2 < attpot || oldAttpot - tresh2 > attpot) {
-      envAtt = 3000 * (float)analogRead(A25) / 1023;
+      currentPatch.envAtt = 3000 * (float)analogRead(A25) / 1023;
       oldAttpot = attpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Attack turn");
@@ -419,8 +419,8 @@ if (millis() - prevTimer > timer) {
 
     decpot = analogRead(A26);
     if (oldDecpot + tresh2 < decpot || oldDecpot - tresh2 > decpot) {
-      envDec = 5000 * (float)analogRead(A26) / 1023;
-      envRel = 5000 * (float)analogRead(A26) / 1023;
+      currentPatch.envDec = 5000 * (float)analogRead(A26) / 1023;
+      currentPatch.envRel = 5000 * (float)analogRead(A26) / 1023;
       oldDecpot = decpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Decay turn");
@@ -428,7 +428,7 @@ if (millis() - prevTimer > timer) {
 
     suspot = analogRead(A10);
     if (oldSuspot + tresh2 < suspot || oldSuspot - tresh2 > suspot) {
-      envSus = (float)analogRead(A10) / 100;
+      currentPatch.envSus = (float)analogRead(A10) / 100;
       oldSuspot = suspot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Sustain turn");
@@ -441,10 +441,10 @@ if (millis() - prevTimer > timer) {
     lfoAmppot = mux3;
     if (oldLfoAmppot + tresh2 < lfoAmppot ||
         oldLfoAmppot - tresh2 > lfoAmppot) {
-      if (lfoAdest == 0 && lfoAshape != 2) {
-        lfoAamp = (float)mux3 / 1024 / 10;
+      if (currentPatch.lfoAdest == 0 && currentPatch.lfoAshape != 2) {
+        currentPatch.lfoAamp = (float)mux3 / 1024 / 10;
       } else {
-        lfoAamp = (float)mux3 / 1024 / 3;
+        currentPatch.lfoAamp = (float)mux3 / 1024 / 3;
       }
       oldLfoAmppot = lfoAmppot + tresh2 / 2;
       parameterChanged = true;
@@ -454,7 +454,7 @@ if (millis() - prevTimer > timer) {
     lfoFreqpot = mux4;
     if (oldLfoFreqpot + tresh2 < lfoFreqpot ||
         oldLfoFreqpot - tresh2 > lfoFreqpot) {
-      lfoAfreq = 20 * (float)mux4 / 1024 + 0.1;
+      currentPatch.lfoAfreq = 20 * (float)mux4 / 1024 + 0.1;
       oldLfoFreqpot = lfoFreqpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Lfo A Freq turn");
@@ -463,8 +463,8 @@ if (millis() - prevTimer > timer) {
     lfoAttpot = mux5;
     if (oldLfoAttpot + tresh2 < lfoAttpot ||
         oldLfoAttpot - tresh2 > lfoAttpot) {
-      lfoAdel = 2000 * (float)mux5 / 1024;
-      lfoAatt = 3000 * (float)mux5 / 1024;
+      currentPatch.lfoAdel = 2000 * (float)mux5 / 1024;
+      currentPatch.lfoAatt = 3000 * (float)mux5 / 1024;
       oldLfoAttpot = lfoAttpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Lfo A Att turn");
@@ -473,8 +473,8 @@ if (millis() - prevTimer > timer) {
     lfoDecpot = mux6;
     if (oldLfoDecpot + tresh2 < lfoDecpot ||
         oldLfoDecpot - tresh2 > lfoDecpot) {
-      lfoAdec = 4000 * (float)mux6 / 1024;
-      lfoArel = 4000 * (float)mux6 / 1024;
+      currentPatch.lfoAdec = 4000 * (float)mux6 / 1024;
+      currentPatch.lfoArel = 4000 * (float)mux6 / 1024;
       oldLfoDecpot = lfoDecpot + (tresh2 / 2);
       parameterChanged = true;
       Serial.println("Lfo A Dec turn");
@@ -483,7 +483,7 @@ if (millis() - prevTimer > timer) {
     lfoSuspot = mux7;
     if (oldLfoSuspot + tresh2 * 2 < lfoSuspot ||
         oldLfoSuspot - tresh2 * 2 > lfoSuspot) {
-      lfoAsus = (float)mux7 / 1024;
+      currentPatch.lfoAsus = (float)mux7 / 1024;
       oldLfoSuspot = lfoSuspot + ((tresh2 * 2) / 2);
       parameterChanged = true;
       Serial.println("Lfo A Sus turn");
@@ -499,11 +499,11 @@ if (millis() - prevTimer > timer) {
     }
     if (oldLfoDestsw < lfoDestsw || oldLfoDestsw > lfoDestsw) {
       if (digitalRead(24) == 1) { // lfo - pitch
-        lfoAdest = 0;
+        currentPatch.lfoAdest = 0;
       } else if (digitalRead(24) == 0 && digitalRead(25) == 0) { // lfo - filter
-        lfoAdest = 1;
+        currentPatch.lfoAdest = 1;
       } else if (digitalRead(25) == 1) { // lfo - amp
-        lfoAdest = 2;
+        currentPatch.lfoAdest = 2;
       }
       oldLfoDestsw = lfoDestsw;
       parameterChanged = true;
@@ -521,11 +521,11 @@ if (millis() - prevTimer > timer) {
 
     if (oldLfoShapesw < lfoShapesw || oldLfoShapesw > lfoShapesw) {
       if (digitalRead(26) == 1) {
-        lfoAshape = 0;
+        currentPatch.lfoAshape = 0;
       } else if (digitalRead(26) == 0 && digitalRead(27) == 0) {
-        lfoAshape = 1;
+        currentPatch.lfoAshape = 1;
       } else if (digitalRead(27) == 1) {
-        lfoAshape = 2;
+        currentPatch.lfoAshape = 2;
       }
       oldLfoShapesw = lfoShapesw;
       parameterChanged = true;
@@ -539,7 +539,7 @@ if (millis() - prevTimer > timer) {
     lfoBAmppot = analogRead(A14);
     if (oldLfoBAmppot + tresh2 < lfoBAmppot ||
         oldLfoBAmppot - tresh2 > lfoBAmppot) {
-      lfoBamp = (float)analogRead(A14) / 1023;
+      currentPatch.lfoBamp = (float)analogRead(A14) / 1023;
       oldLfoBAmppot = lfoBAmppot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Lfo B amp turn");
@@ -548,7 +548,7 @@ if (millis() - prevTimer > timer) {
     lfoBFreqpot = analogRead(A22);
     if (oldLfoBFreqpot + tresh2 < lfoBFreqpot ||
         oldLfoBFreqpot - tresh2 > lfoBFreqpot) {
-      lfoBfreq = 5 * (float)analogRead(A22) / 1023 + 0.1;
+      currentPatch.lfoBfreq = 5 * (float)analogRead(A22) / 1023 + 0.1;
       oldLfoBFreqpot = lfoBFreqpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Lfo B freq turn");
@@ -562,9 +562,9 @@ if (millis() - prevTimer > timer) {
     dlyAmtpot = analogRead(A16);
     if (oldDlyAmtpot + tresh2 < dlyAmtpot ||
         oldDlyAmtpot - tresh2 > dlyAmtpot) {
-      dlyAmt = (float)analogRead(A16) / 1100 - 0.1;
-      if (dlyAmt < 0) {
-        dlyAmt = 0;
+      currentPatch.dlyAmt = (float)analogRead(A16) / 1100 - 0.1;
+      if (currentPatch.dlyAmt < 0) {
+        currentPatch.dlyAmt = 0;
       }
       oldDlyAmtpot = dlyAmtpot + tresh2 / 2;
       parameterChanged = true;
@@ -574,8 +574,8 @@ if (millis() - prevTimer > timer) {
     dlyTimepot = analogRead(A17);
     if (oldDlyTimepot + tresh2 < dlyTimepot ||
         oldDlyTimepot - tresh2 > dlyTimepot) {
-      dlyTimeL = analogRead(A17) / 2.5;
-      dlyTimeR = analogRead(A17) / 1.25;
+      currentPatch.dlyTimeL = analogRead(A17) / 2.5;
+      currentPatch.dlyTimeR = analogRead(A17) / 1.25;
       oldDlyTimepot = dlyTimepot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Dly time turn");
@@ -585,7 +585,7 @@ if (millis() - prevTimer > timer) {
     revMixpot = analogRead(A19);
     if (oldRevMixpot + tresh2 < revMixpot ||
         oldRevMixpot - tresh2 > revMixpot) {
-      revMix = ((float)analogRead(A19) / 1024 / 1.2);
+      currentPatch.revMix = ((float)analogRead(A19) / 1024 / 1.2);
       oldRevMixpot = revMixpot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Rev mix turn");
@@ -594,7 +594,7 @@ if (millis() - prevTimer > timer) {
     revSizepot = analogRead(A18);
     if (oldRevSizepot + tresh2 < revSizepot ||
         oldRevSizepot - tresh2 > revSizepot) {
-      revSize = ((float)analogRead(A18) / 1024 - 0.01);
+      currentPatch.revSize = ((float)analogRead(A18) / 1024 - 0.01);
       oldRevSizepot = revSizepot + tresh2 / 2;
       parameterChanged = true;
       Serial.println("Rev size turn");
