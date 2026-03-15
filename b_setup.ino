@@ -49,24 +49,43 @@ void setup() {
   for (int i=0; i < NUM_VOICES; i++) {
       // Patch LFOs & Envelopes
       voices[i].patch_lfoA_lfoAenv      = new AudioConnection_F32(voices[i].lfoA, voices[i].lfoAenv);
-      voices[i].patch_lfoAenv_modMix    = new AudioConnection_F32(voices[i].lfoAenv, 0, voices[i].modMix, 1);
-      voices[i].patch_lfoAenv_vcoB      = new AudioConnection_F32(voices[i].lfoAenv, 0, voices[i].vcoB, 0);
-      voices[i].patch_lfoAenv_vcoC      = new AudioConnection_F32(voices[i].lfoAenv, 0, voices[i].vcoC, 0);
-      voices[i].patch_lfoAenv_sub       = new AudioConnection_F32(voices[i].lfoAenv, 0, voices[i].sub, 0);
-      voices[i].patch_lfoAenv_filterMix = new AudioConnection_F32(voices[i].lfoAenv, 0, voices[i].filterMix, 1);
       
-      voices[i].patch_lfoB_vcoA         = new AudioConnection_F32(voices[i].lfoB, 0, voices[i].vcoA, 1);
-      voices[i].patch_lfoB_vcoB         = new AudioConnection_F32(voices[i].lfoB, 0, voices[i].vcoB, 1);
+      // MAP SOURCES TO MOD MIXERS (Ch 0: LFO A, Ch 1: LFO B, Ch 2: Env, Ch 3: Vel/DC)
+      voices[i].patch_lfoA_modCutoff    = new AudioConnection_F32(voices[i].lfoA, 0, voices[i].modMixCutoff, 0);
+      voices[i].patch_lfoA_modRes       = new AudioConnection_F32(voices[i].lfoA, 0, voices[i].modMixRes, 0);
+      voices[i].patch_lfoA_modCross     = new AudioConnection_F32(voices[i].lfoA, 0, voices[i].modMixCross, 0);
+      voices[i].patch_lfoA_modPitch     = new AudioConnection_F32(voices[i].lfoA, 0, voices[i].modMixPitch, 0);
 
-      // Mod mix
-      voices[i].patch_modMix_vcoA       = new AudioConnection_F32(voices[i].modMix, 0, voices[i].vcoA, 0);
+      voices[i].patch_lfoB_modCutoff    = new AudioConnection_F32(voices[i].lfoB, 0, voices[i].modMixCutoff, 1);
+      voices[i].patch_lfoB_modRes       = new AudioConnection_F32(voices[i].lfoB, 0, voices[i].modMixRes, 1);
+      voices[i].patch_lfoB_modCross     = new AudioConnection_F32(voices[i].lfoB, 0, voices[i].modMixCross, 1);
+      voices[i].patch_lfoB_modPitch     = new AudioConnection_F32(voices[i].lfoB, 0, voices[i].modMixPitch, 1);
+
+      voices[i].patch_filterEnv_modCutoff = new AudioConnection_F32(voices[i].filterEnv, 0, voices[i].modMixCutoff, 2);
+      voices[i].patch_filterEnv_modRes    = new AudioConnection_F32(voices[i].filterEnv, 0, voices[i].modMixRes, 2);
+      voices[i].patch_filterEnv_modCross  = new AudioConnection_F32(voices[i].filterEnv, 0, voices[i].modMixCross, 2);
+      voices[i].patch_filterEnv_modPitch  = new AudioConnection_F32(voices[i].filterEnv, 0, voices[i].modMixPitch, 2);
+
+      voices[i].patch_vel_modCutoff     = new AudioConnection_F32(voices[i].dc, 0, voices[i].modMixCutoff, 3);
+      voices[i].patch_vel_modRes        = new AudioConnection_F32(voices[i].dc, 0, voices[i].modMixRes, 3);
+      voices[i].patch_vel_modCross      = new AudioConnection_F32(voices[i].dc, 0, voices[i].modMixCross, 3);
+      voices[i].patch_vel_modPitch      = new AudioConnection_F32(voices[i].dc, 0, voices[i].modMixPitch, 3);
+
+      // MAP MOD MIXERS TO DESTINATIONS
+      voices[i].patch_modPitch_vcoA     = new AudioConnection_F32(voices[i].modMixPitch, 0, voices[i].vcoA, 0);
+      voices[i].patch_modPitch_vcoB     = new AudioConnection_F32(voices[i].modMixPitch, 0, voices[i].vcoB, 0);
+      voices[i].patch_modPitch_vcoC     = new AudioConnection_F32(voices[i].modMixPitch, 0, voices[i].vcoC, 0);
+      
+      voices[i].patch_modCross_vcoB     = new AudioConnection_F32(voices[i].modMixCross, 0, voices[i].vcoB, 1); // Assuming 1 is phase/freq mod input for vcoB
+      
+      voices[i].patch_modCutoff_filterFreq = new AudioConnection_F32(voices[i].modMixCutoff, 0, voices[i].filter, 1);
+      voices[i].patch_modRes_filterRes  = new AudioConnection_F32(voices[i].modMixRes, 0, voices[i].filter, 2); // Check if filter supports F32 resonance cv
 
       // VCOs to Voice Mix
       voices[i].patch_sub_voiceMix      = new AudioConnection_F32(voices[i].sub, 0, voices[i].voiceMix, 3);
       voices[i].patch_vcoA_voiceMix     = new AudioConnection_F32(voices[i].vcoA, 0, voices[i].voiceMix, 0);
       voices[i].patch_vcoB_voiceMix     = new AudioConnection_F32(voices[i].vcoB, 0, voices[i].voiceMix, 1);
       voices[i].patch_vcoC_voiceMix     = new AudioConnection_F32(voices[i].vcoC, 0, voices[i].voiceMix, 2);
-      voices[i].patch_vcoB_modMix       = new AudioConnection_F32(voices[i].vcoB, 0, voices[i].modMix, 0);
 
       // Voice mix to filter
       voices[i].patch_voiceMix_filter   = new AudioConnection_F32(voices[i].voiceMix, 0, voices[i].filter, 0);
@@ -98,12 +117,14 @@ void setup() {
       voices[i].lfoA.begin(WAVEFORM_SINE);
       voices[i].lfoB.begin(0.5, 1, WAVEFORM_TRIANGLE);
 
-      // Apply LFO DESTINATION DISCONNECT Defaults
-      voices[i].patch_lfoAenv_modMix->disconnect();
-      voices[i].patch_lfoAenv_vcoB->disconnect();
-      voices[i].patch_lfoAenv_vcoC->disconnect();
-      voices[i].patch_lfoAenv_sub->disconnect();
-      voices[i].patch_lfoAenv_filterMix->disconnect();
+      // Apply initial 0 gain to all modulation matrix connections
+      for(int channel = 0; channel < 4; ++channel) {
+          voices[i].modMixCutoff.gain(channel, 0.0f);
+          voices[i].modMixRes.gain(channel, 0.0f);
+          voices[i].modMixCross.gain(channel, 0.0f);
+          voices[i].modMixPitch.gain(channel, 0.0f);
+      }
+      
   }
 
   // dly

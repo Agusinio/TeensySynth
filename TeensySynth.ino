@@ -19,7 +19,10 @@ struct Voice {
     AudioSynthWaveformModulated_F32   vcoC;
     AudioSynthWaveformModulated_F32   sub;
 
-    AudioMixer4_F32                   modMix;
+    AudioMixer4_F32                   modMixCutoff;
+    AudioMixer4_F32                   modMixRes;
+    AudioMixer4_F32                   modMixCross;
+    AudioMixer4_F32                   modMixPitch;
     AudioMixer4_F32                   voiceMix;
 
     AudioSynthWaveformDc_F32          dc;
@@ -31,21 +34,41 @@ struct Voice {
 
     // PATCHCORDS (Array of Pointers)
     AudioConnection_F32* patch_lfoA_lfoAenv;
-    AudioConnection_F32* patch_lfoAenv_modMix;
-    AudioConnection_F32* patch_lfoAenv_vcoB;
-    AudioConnection_F32* patch_lfoAenv_vcoC;
-    AudioConnection_F32* patch_lfoAenv_sub;
-    AudioConnection_F32* patch_lfoAenv_filterMix;
+    // MAP SOURCES TO MOD MIXERS
+    AudioConnection_F32* patch_lfoA_modCutoff;
+    AudioConnection_F32* patch_lfoA_modRes;
+    AudioConnection_F32* patch_lfoA_modCross;
+    AudioConnection_F32* patch_lfoA_modPitch;
 
-    AudioConnection_F32* patch_lfoB_vcoA;
-    AudioConnection_F32* patch_lfoB_vcoB;
+    AudioConnection_F32* patch_lfoB_modCutoff;
+    AudioConnection_F32* patch_lfoB_modRes;
+    AudioConnection_F32* patch_lfoB_modCross;
+    AudioConnection_F32* patch_lfoB_modPitch;
 
-    AudioConnection_F32* patch_modMix_vcoA;
+    AudioConnection_F32* patch_filterEnv_modCutoff;
+    AudioConnection_F32* patch_filterEnv_modRes;
+    AudioConnection_F32* patch_filterEnv_modCross;
+    AudioConnection_F32* patch_filterEnv_modPitch;
+
+    AudioConnection_F32* patch_vel_modCutoff;
+    AudioConnection_F32* patch_vel_modRes;
+    AudioConnection_F32* patch_vel_modCross;
+    AudioConnection_F32* patch_vel_modPitch;
+
+    // MAP MOD MIXERS TO DESTINATIONS
+    AudioConnection_F32* patch_modPitch_vcoA;
+    AudioConnection_F32* patch_modPitch_vcoB;
+    AudioConnection_F32* patch_modPitch_vcoC;
+    
+    AudioConnection_F32* patch_modCross_vcoB; // Or vcoC depending on cross mod routing. Will check in setup.
+    
+    AudioConnection_F32* patch_modCutoff_filterFreq;
+    AudioConnection_F32* patch_modRes_filterRes;
 
     AudioConnection_F32* patch_sub_voiceMix;
     AudioConnection_F32* patch_vcoA_voiceMix;
     AudioConnection_F32* patch_vcoB_voiceMix;
-    AudioConnection_F32* patch_vcoB_modMix;
+    AudioConnection_F32* patch_vcoC_voiceMix;
     AudioConnection_F32* patch_vcoC_voiceMix;
 
     AudioConnection_F32* patch_voiceMix_filter;
@@ -159,6 +182,21 @@ float oldBend = 1.0;
 bool parameterChanged = true;
 
 struct Patch {
+  // Modulation Matrix: 4 Sources x 4 Destinations
+  // Sources: 0=LFO_A, 1=LFO_B, 2=ENV, 3=VEL
+  // Dest: 0=CUTOFF, 1=RES, 2=CROSSMOD, 3=PITCH
+#define SRC_LFO_A 0
+#define SRC_LFO_B 1
+#define SRC_ENV 2
+#define SRC_VEL 3
+
+#define DEST_CUTOFF 0
+#define DEST_RES 1
+#define DEST_CROSSMOD 2
+#define DEST_PITCH 3
+
+  float modMatrix[4][4] = {0.0};
+
   // voice mixer
   float vcoAvol = 0.5;
   float vcoBvol = 0.5;
