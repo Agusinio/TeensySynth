@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 ### Changed
+- **Parameter Struct Refactoring:**
+  - Grouped all 38 synthesize parameters into a unified `Patch` struct.
+  - Replaced dozens of disorganized floating global variables with `currentPatch` and `initPatch` instantiations.
+  - Refactored all parameter references within audio loops (`c_loop_vcos.ino`, `d_filter_lfos.ino`, etc.) and hardware read logic (`g_params.ino`) to use the new `currentPatch.` syntax.
+- **Preset Management Optimization:**
+  - `h_presets.ino`: Replaced repetitive `EEPROM.writeFloat`/`readInt` blocks with robust, block-memory serialization using `EEPROM.put(address, currentPatch)` and `EEPROM.get(address, currentPatch)`.
+- **Monophonic Mode Enhancements:**
+  - `i_noteOn.ino`: Upgraded the monophonic fallback behavior to include Last-Note Priority and Legato (not re-triggering the envelope if a note is already held).
+- **Filter Cutoff Smoothing:**
+  - `g_params.ino` & `TeensySynth.ino`: Implemented an Exponential Moving Average (EMA) low-pass filter on the cutoff potentiometer reading to provide a smoother, "creamier" sweep, eliminating stepped artifacts.
+- **MIDI Read Distribution Optimization:**
+  - `c_loop_vcos.ino`: Replaced single `usbMIDI.read()` / `MIDI.read()` calls in the main loop with `while` loops to ensure all pending MIDI messages are flushed each cycle, minimizing latency even under heavy parameter processing loads.
+### Changed
 - **Architecture Refactoring for Polyphony:**
   - Encapsulated all per-voice audio components and patch cords into a new `Voice` struct.
   - Replaced individual global array declarations (e.g., `AudioSynthWaveform_F32 lfoA[NUM_VOICES];`) with a unified array: `Voice voices[NUM_VOICES];`.
